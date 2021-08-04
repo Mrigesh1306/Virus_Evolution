@@ -13,9 +13,9 @@ import java.util.Random;
  */
 public class VirusGenome {
 
-    private String generateGenotype(String isMutationOccured, String bases) {
+    String generateGenotype(String isMutationOccured, String bases, int gene) {
 
-        int gene = 10;
+
         HashMap<String, Integer> map = new HashMap<String, Integer>();
         map.put("A", 4);
         map.put("C", 3);
@@ -40,10 +40,10 @@ public class VirusGenome {
         for (int i = 0; i < Integer.parseInt(recombination_rate); i++) {
             if (randomno.nextDouble() < Double.parseDouble(rate)) {
                 String base = "ACGTU";
-                System.out.println("*********[Mutant]********  : " + generateGenotype(isMutationOccured, base));
+                System.out.println("*********[Mutant]********  : " + generateGenotype(isMutationOccured, base, 10));
             } else {
                 String base = "ACGT";
-                System.out.println(generateGenotype(isMutationOccured, base));
+                System.out.println(generateGenotype(isMutationOccured, base, 10));
             }
         }
 
