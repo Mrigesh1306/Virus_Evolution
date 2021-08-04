@@ -14,10 +14,14 @@ public class Virions {
     static VirusGenome vg = new VirusGenome();
 
     public static void virionFamily() {
-
+        String st;
         for (int i = 0; i < 3000; i++) {
             for (String s : v1) {
-                v1.add(vg.generateGenotype("true", "ACGT", 10));
+                st = vg.generateGenotype("true", "ACGT", 10);
+                StringBuilder sb = new StringBuilder(st);
+                sb.setCharAt(0, 'U');
+                st = sb.toString();
+                v1.add(st);
             }
         }
         for (String str : v1)
