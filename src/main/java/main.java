@@ -20,10 +20,10 @@ public class main {
         createVirusStrainMap();
     }
 
-    private static void createVirusStrainMap() {
+    private static void createVirusStrainMap() throws IOException {
         VirusStrainMap vmap =  new VirusStrainMap();
         Simulator sim = new Simulator(vmap);
-        new Timer().schedule(sim, 10, 15);
+        //new Timer().schedule(sim, 10, 15);
     }
 
 
@@ -40,22 +40,36 @@ public class main {
     }
 
     private static void createGraph() throws IOException {
-
+        //reading the config file to fetch the value of variables
         Ini ini = new Ini(new File("./config.properties"));
+        //connecting the file to map for ease in reading and fetching
         Map<String, String> map = ini.get("default");
 
+        //creating the main frame and panel
         JFrame frame = new JFrame();
         JPanel ui = new JPanel();
         ui.setLayout(new GridLayout(1,3));
 
+        //calling the class which creates the graph and passing it to thread to ensure continuous movement
+        Simulator graph = new Simulator();
+        Thread panelThread = new Thread(graph);
+
+        //adding the graph and line charts to main panel and setting the background color
+        ui.add(graph);
+        //ui.add(new Charts());
+        ui.setBackground(Color.BLACK);
+
+        //adding the ui to frame and adjusting its attribute
         frame.add(ui);
         frame.setVisible(true);
-        frame.setTitle("Viral Evolution of SARS CoV-19 on Island");
+        frame.setTitle(map.get("virus_simulation")+" of "+map.get("city_population")+" Residents of Boston");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(700, 650);
+        frame.setSize(800, 600);
         frame.setResizable(false);
-        frame.setLocation(0, 0);
+        frame.setLocation(50, 50);
 
+        //starting the thread
+        panelThread.start();
     }
 
     private static void createAndShowGui() throws IOException {

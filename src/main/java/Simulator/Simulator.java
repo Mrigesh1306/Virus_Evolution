@@ -1,10 +1,64 @@
 package Simulator;
 
+import Person.Person;
+import Person.PersonDirectory;
 import Virus.VirusStrainMap;
+import org.ini4j.Ini;
 
+import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.Timer;
 import java.util.TimerTask;
 
-public class Simulator extends TimerTask {
+public class Simulator extends JPanel implements Runnable {
+
+
+    //random walk code
+    //reading the config file to fetch the value of variables
+    Ini ini = new Ini(new File("./config.properties"));
+    //connecting the file to 2 map to ease the reading and fetching for the default and resident_status
+    Map<String, String> map = ini.get("default");
+    Map<String, String> resident_status = ini.get("resident_status");
+
+    public Timer timer = new Timer();
+
+
+
+    //constructor
+    public Simulator() throws IOException {
+        super();
+        this.setBackground(new Color(0, 0, 0));
+    }
+
+    @Override
+    public void paint(Graphics graphics) {
+        super.paint(graphics);
+        List<Person> people = PersonDirectory.getInstance().getPersonList();
+
+
+        for (Person person : people) {
+
+            graphics.setColor(new Color(0xFFFFFF));
+            person.checkHealth();
+            graphics.fillOval(person.getX(), person.getY(), 4, 4);
+        }
+        //int people=Integer.parseInt(map.get("human_population"));
+
+    }
+
+    class MyTimerTask extends TimerTask {
+        @Override
+        public void run() {
+
+            Simulator.this.repaint();
+        }
+    }
+
+    // end
 
     static int speed = 2;
     static boolean playing = true;
@@ -12,7 +66,7 @@ public class Simulator extends TimerTask {
     public static int simTicks;
     VirusStrainMap vmap;
 
-    public Simulator(VirusStrainMap vmap){
+    public Simulator(VirusStrainMap vmap) throws IOException {
         actualTicks=0;
         simTicks = 0;
         this.vmap=vmap;
@@ -21,6 +75,7 @@ public class Simulator extends TimerTask {
     //Demo Code *Needs to be updated*
     @Override
     public void run() {
+        timer.schedule(new MyTimerTask(), 0, 100);
         if(playing) {
             actualTicks++;
             if(actualTicks%speed==0) {
