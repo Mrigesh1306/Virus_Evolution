@@ -1,6 +1,7 @@
 package Virus;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -13,21 +14,25 @@ public class Virions {
     //static String[] cat4 = new String[10];
     static VirusGenome vg = new VirusGenome();
 
-    public static void virionFamily() {
-        String st;
-        for (int i = 0; i < 3000; i++) {
-            for (String s : v1) {
+    public static void VirionFamily() {
+        String st, t="";
+        for (int i = 0; i < 10; i++) {
+
                 st = vg.generateGenotype("true", "ACGT", 10);
                 StringBuilder sb = new StringBuilder(st);
                 sb.setCharAt(0, 'U');
-                st = sb.toString();
-                v1.add(st);
-            }
+                t = sb.toString();
+                System.out.println(t);
+                v1.add(t);
         }
+        VirionReproduction(t);
+        //System.out.println("v1" +v1);
+        //System.out.println(Arrays.toString(v1));
         for (String str : v1)
         {
             System.out.println(str);
         }
+
 
     }
     public static String shuffle(String string) {
@@ -46,33 +51,13 @@ public class Virions {
     }
 
     public static String VirionReproduction(String s){
-        //String pv;
+        String pv;
 
         Random r = new Random();
-        shuffle(s);
-        char gb = s.charAt(s.length()-1), temp;
-        if(gb=='A'){
-            String g = "GCT";
-            temp = g.charAt(r.nextInt(g.length()));
-            s.replace(s.charAt(9), temp);
-        }
-        else if(gb=='G'){
-            String g = "ACT";
-            temp = g.charAt(r.nextInt(g.length()));
-            s.replace(s.charAt(9), temp);
-        }
-        else if(gb=='C'){
-            String g = "AGT";
-            temp = g.charAt(r.nextInt(g.length()));
-            s.replace(s.charAt(9), temp);
-        }
+        pv = shuffle(s);
+        v1.add(pv);
 
-        else {
-            String g = "ACG";
-            temp = g.charAt(r.nextInt(g.length()));
-            s.replace(s.charAt(9), temp);
-        }
-        return s;
+        return pv;
 
 
 

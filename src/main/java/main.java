@@ -2,6 +2,7 @@ import Simulator.Simulator;
 import Virus.VirusGenomeJFrameTest;
 import Virus.VirusStrainMap;
 import org.ini4j.Ini;
+import Virus.Virions;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,8 +17,10 @@ public class main {
     public static void main(String args[]) throws IOException {
 
         createGraph();
-        createVirusGenome();
+        //createVirusGenome();
         createVirusStrainMap();
+        Virus.Virions.VirionFamily();
+
     }
 
     private static void createVirusStrainMap() throws IOException {
