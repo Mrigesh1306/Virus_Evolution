@@ -18,6 +18,7 @@ private RandomWalk randomWalk;
     private double xAxis;
     private double yAxis;
     private Island island;
+    private boolean isInfected;
 
     public Person(int xAxis, int yAxis, Island island) throws IOException {
         super(xAxis,yAxis);
@@ -119,5 +120,13 @@ private RandomWalk randomWalk;
         double targetY = MathUtil.stdGaussian(100, yAxis);
         randomWalk = new RandomWalk((int) targetX, (int) targetY);
         doRandomMove();
+    }
+
+    public boolean isInfected() {
+        return isInfected;
+    }
+
+    public void setInfected(boolean infected) {
+        isInfected = infected;
     }
 }

@@ -17,7 +17,6 @@ public class PersonDirectory {
     Ini ini = new Ini(new File("./config.properties"));
     Map<String, String> host_type = ini.get("host_type");
     Map<String, String> map = ini.get("default");
-
     static {
         try {
             personDirectory = new PersonDirectory();
@@ -49,4 +48,8 @@ public class PersonDirectory {
     public void setPersonList(List<Person> personList) {
         PersonList = personList;
     }
+
+//    public List<Person> getInfectedList(){
+//
+//    }
 }
