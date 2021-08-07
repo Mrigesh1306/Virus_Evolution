@@ -19,45 +19,13 @@ private RandomWalk randomWalk;
     private double yAxis;
     private Island island;
     private boolean isInfected;
-
-    public Person(int xAxis, int yAxis, Island island) throws IOException {
-        super(xAxis,yAxis);
-        this.xAxis = MathUtil.stdGaussian(100, xAxis);
-        this.yAxis = MathUtil.stdGaussian(100, yAxis);
-        this.island = island;
-    }
-
-    public RandomWalk getRandomWalk() {
-        return randomWalk;
-    }
-
-    public void setRandomWalk(RandomWalk randomWalk) {
-        this.randomWalk = randomWalk;
-    }
-
-    public double getxAxis() {
-        return xAxis;
-    }
-
-    public void setxAxis(double xAxis) {
-        this.xAxis = xAxis;
-    }
-
-    public double getyAxis() {
-        return yAxis;
-    }
-
-    public void setyAxis(double yAxis) {
-        this.yAxis = yAxis;
-    }
-
-    public Island getIsland() {
-        return island;
-    }
-
-    public void setIsland(Island island) {
-        this.island = island;
-    }
+    public String human_genotype;
+    public String infection_Status;
+    public int infection_count;
+    public double infection_Factor;
+    public double death_factor;
+    public int recovery_day;
+    public int mutation_count;
 
     public void doRandomMove() {
 
@@ -122,11 +90,105 @@ private RandomWalk randomWalk;
         doRandomMove();
     }
 
+    public Person(int xAxis, int yAxis, Island island) throws IOException {
+        super(xAxis,yAxis);
+        this.xAxis = MathUtil.stdGaussian(100, xAxis);
+        this.yAxis = MathUtil.stdGaussian(100, yAxis);
+        this.island = island;
+    }
+
+    public RandomWalk getRandomWalk() {
+        return randomWalk;
+    }
+
+    public void setRandomWalk(RandomWalk randomWalk) {
+        this.randomWalk = randomWalk;
+    }
+
+    public double getxAxis() {
+        return xAxis;
+    }
+
+    public void setxAxis(double xAxis) {
+        this.xAxis = xAxis;
+    }
+
+    public double getyAxis() {
+        return yAxis;
+    }
+
+    public void setyAxis(double yAxis) {
+        this.yAxis = yAxis;
+    }
+
+    public Island getIsland() {
+        return island;
+    }
+
+    public void setIsland(Island island) {
+        this.island = island;
+    }
+
     public boolean isInfected() {
         return isInfected;
     }
 
     public void setInfected(boolean infected) {
         isInfected = infected;
+    }
+    public String getHuman_genotype() {
+        return human_genotype;
+    }
+
+    public void setHuman_genotype(String human_genotype) {
+        this.human_genotype = human_genotype;
+    }
+
+    public String getInfection_Status() {
+        return infection_Status;
+    }
+
+    public void setInfection_Status(String infection_Status) {
+        this.infection_Status = infection_Status;
+    }
+
+    public int getInfection_count() {
+        return infection_count;
+    }
+
+    public void setInfection_count(int infection_count) {
+        this.infection_count = infection_count;
+    }
+
+    public double getInfection_Factor() {
+        return infection_Factor;
+    }
+
+    public void setInfection_Factor(double infection_Factor) {
+        this.infection_Factor = infection_Factor;
+    }
+
+    public double getDeath_factor() {
+        return death_factor;
+    }
+
+    public void setDeath_factor(double death_factor) {
+        this.death_factor = death_factor;
+    }
+
+    public int getRecovery_day() {
+        return recovery_day;
+    }
+
+    public void setRecovery_day(int recovery_day) {
+        this.recovery_day = recovery_day;
+    }
+
+    public int getMutation_count() {
+        return mutation_count;
+    }
+
+    public void setMutation_count(int mutation_count) {
+        this.mutation_count = mutation_count;
     }
 }

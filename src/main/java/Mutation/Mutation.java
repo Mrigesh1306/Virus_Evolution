@@ -4,6 +4,7 @@ import org.ini4j.Ini;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Mutation {
@@ -11,6 +12,7 @@ public class Mutation {
     private static int gene_fitness_value;
     public static int infection_factor;   //U = host_value
     public static int genotypefitnessValue;
+    public static HashMap<String,String> mutationColor = new HashMap<>();
 
     public static int calculateGenotypeFitness(String genotype, int infection_factor) throws IOException {
         Ini ini = new Ini(new File("./config.properties"));
