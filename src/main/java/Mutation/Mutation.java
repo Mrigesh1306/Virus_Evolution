@@ -12,11 +12,22 @@ import java.util.Random;
 public class Mutation {
 
     public static HashMap<Integer, Color> mutationColor = new HashMap<>();
+    public String genotype;
+    public int infection_factor;
+    public static int previousHostFitness = 0;
+    public static int maxCurrentFitness = 0;
+    public static int maxPreviousFitness = 0;
 
     public static void main(String[] args) throws IOException {
-        int s = calculateGenotypeFitness("1BCDEFGHIJ", 93);
-        int q = calculateGenotypeFitness("1BCDEFGHIJ", 97);
+
+        int fitness1 = calculateGenotypeFitness("2BCDEFGHIJ", 97);
+        boolean isVariant1 = calculateMutationFactor("2BCDEFGHIJ", fitness1);
+
+        int fitness2 = calculateGenotypeFitness("3BCDEFGHIJ", 96);
+        boolean isVariant2 = calculateMutationFactor("3BCDEFGHIJ", fitness2);
+        System.out.println("isVariant2 "+isVariant2);
     }
+
 
     public static int calculateGenotypeFitness(String genotype, int infection_factor) throws IOException {
         Ini ini = new Ini(new File("./config.properties"));
@@ -26,7 +37,6 @@ public class Mutation {
         int genotypefitnessValue = 0;
         int gene_fitness_value = 0;
         boolean islarger = genotype.length() > 10 ? true : false;
-        int loop = genotype.length() > 10 ? genotype.length() : genotype.length();
 
         char[] gene = genotype.toCharArray();
         int j = 0;
@@ -47,20 +57,19 @@ public class Mutation {
                             * geneLength;
                     islarger = false;
                     i = i + 2;
-
                 } else {
                     gene_fitness_value = ((2 * baseVal)
                             + infection_factor * Integer.parseInt(Character.toString(gene[i])))
                             * geneLength;
                 }
             }
+            // insertIntoMutationList(i);
             genotypefitnessValue += gene_fitness_value;
             j++;
         }
+        System.out.println("Genotype " + genotype + " Value " + genotypefitnessValue);
         return genotypefitnessValue;
     }
-
-
 
     //Inserts every mutation into this HashMap and assigns random color
     public static void insertIntoMutationList(int mutationCount) {
@@ -69,12 +78,23 @@ public class Mutation {
     }
 
     //Fetch the color based on mutation count
-    public static Color fetchmutationColor(int mutationCount) {
+    public Color fetchmutationColor(int mutationCount) {
         return mutationColor.get(mutationCount);
     }
 
+    //    Check if the mutation is variant
+    public static boolean calculateMutationFactor(String genotype, int currentfitnessValue) throws IOException {
+        Ini ini = new Ini(new File("./config.properties"));
+        Map<String, String> map = ini.get("default");
+        double dominant_factor = Double.parseDouble(map.get("dominant_factor"));
 
+        maxCurrentFitness = calculateGenotypeFitness(genotype, 100);
 
+        double variantThreshold = maxPreviousFitness + (maxCurrentFitness - maxPreviousFitness) * dominant_factor;
 
+        maxPreviousFitness = maxCurrentFitness;
+        previousHostFitness = currentfitnessValue;
 
+        return currentfitnessValue > variantThreshold;
+    }
 }

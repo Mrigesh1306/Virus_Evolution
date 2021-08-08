@@ -1,5 +1,6 @@
 package Simulator;
 
+import Mutation.Mutation;
 import Person.Person;
 import Person.PersonDirectory;
 import Virus.VirusStrainMap;
@@ -23,6 +24,7 @@ public class Simulator extends JPanel implements Runnable {
     //connecting the file to 2 map to ease the reading and fetching for the default and resident_status
     Map<String, String> map = ini.get("default");
     Map<String, String> resident_status = ini.get("resident_status");
+    public Mutation mutation = new Mutation();
 
     public Timer timer = new Timer();
 
@@ -38,16 +40,12 @@ public class Simulator extends JPanel implements Runnable {
     public void paint(Graphics graphics) {
         super.paint(graphics);
         List<Person> people = PersonDirectory.getInstance().getPersonList();
-
-
+        mutation = new Mutation();
         for (Person person : people) {
-
-            graphics.setColor(new Color(0xFFFFFF));
+            graphics.setColor(mutation.fetchmutationColor(person.getMutation_count()));
             person.checkHealth();
-            graphics.fillOval(person.getX(), person.getY(), 4, 4);
+            graphics.fillOval(person.getX(), person.getY(), 20, 20);
         }
-        //int people=Integer.parseInt(map.get("human_population"));
-
     }
 
     class MyTimerTask extends TimerTask {
