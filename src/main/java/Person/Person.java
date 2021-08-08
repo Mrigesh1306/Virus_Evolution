@@ -18,9 +18,9 @@ private RandomWalk randomWalk;
     private double xAxis;
     private double yAxis;
     private Island island;
-    private boolean isInfected;
-    public String human_genotype;
-    public String infection_Status;
+    private boolean isInfected=false;
+    public String human_genome="";
+    public String infection_Status="Naive";
     public int infection_count;
     public double infection_Factor;
     public double death_factor;
@@ -90,10 +90,11 @@ private RandomWalk randomWalk;
         doRandomMove();
     }
 
-    public Person(int xAxis, int yAxis, Island island) throws IOException {
+    public Person(int xAxis, int yAxis, Island island, String human_genome) throws IOException {
         super(xAxis,yAxis);
         this.xAxis = MathUtil.stdGaussian(100, xAxis);
         this.yAxis = MathUtil.stdGaussian(100, yAxis);
+        this.human_genome=human_genome;
         this.island = island;
     }
 
@@ -136,12 +137,13 @@ private RandomWalk randomWalk;
     public void setInfected(boolean infected) {
         isInfected = infected;
     }
-    public String getHuman_genotype() {
-        return human_genotype;
+
+    public String getHuman_genome() {
+        return human_genome;
     }
 
-    public void setHuman_genotype(String human_genotype) {
-        this.human_genotype = human_genotype;
+    public void setHuman_genome(String human_genome) {
+        this.human_genome = human_genome;
     }
 
     public String getInfection_Status() {
