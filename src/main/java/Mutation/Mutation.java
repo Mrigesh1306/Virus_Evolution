@@ -2,6 +2,7 @@ package Mutation;
 
 import org.ini4j.Ini;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -9,17 +10,24 @@ import java.util.Map;
 
 public class Mutation {
 
-    private static int gene_fitness_value;
+
     public static int infection_factor;   //U = host_value
-    public static int genotypefitnessValue;
-    public static HashMap<String,String> mutationColor = new HashMap<>();
+    //public static int genotypefitnessValue;
+    public static HashMap<String, Color> variantColor= new HashMap<String, Color>();;
+
+    public static void main(String[] args) throws IOException {
+       int s = calculateGenotypeFitness("1BCDEFGHIJ",93);
+        int q = calculateGenotypeFitness("1BCDEFGHIJ",97);
+    }
+
 
     public static int calculateGenotypeFitness(String genotype, int infection_factor) throws IOException {
         Ini ini = new Ini(new File("./config.properties"));
         Map<String, String> gene_length = ini.get("gene_length");
         Map<String, String> base_value = ini.get("base_value");
         int baseVal = Integer.parseInt(base_value.get("base"));
-
+        int genotypefitnessValue=0;
+        int gene_fitness_value=0;
         boolean islarger = genotype.length() > 10 ? true : false;
         int loop = genotype.length() > 10 ? genotype.length() : genotype.length();
 
@@ -49,11 +57,12 @@ public class Mutation {
                             * geneLength;
                 }
             }
-
             genotypefitnessValue += gene_fitness_value;
             j++;
         }
-        System.out.println("Final genotypefitnessValue " + genotypefitnessValue);
         return genotypefitnessValue;
     }
+
+
+
 }
