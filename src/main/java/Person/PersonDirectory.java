@@ -65,7 +65,7 @@ public class PersonDirectory {
     List<Person> infectedList=new ArrayList<Person>();
     for(Person p : PersonList)
         {
-            if(p.isInfected())
+            if(p.isInfected() && !p.isDead())
                 infectedList.add(p);
         }
     return infectedList;
@@ -76,7 +76,7 @@ public class PersonDirectory {
         List<Person> currentInfectedList=new ArrayList<Person>();
         for(Person p : PersonList)
         {
-            if(p.isInfected() && p.getMutation_count()== currMutationCount)
+            if(p.isInfected() && p.getMutation_count()== currMutationCount && !p.isDead())
                 currentInfectedList.add(p);
         }
 
@@ -93,7 +93,7 @@ public class PersonDirectory {
         List<Person> currentNonInfectedList=new ArrayList<Person>();
         for(Person p : PersonList)
         {
-            if(!p.isInfected() && (p.getInfection_Status().equals("Naive") || p.getInfection_Status().equals("Recovered")))
+            if(!p.isInfected() && (p.getInfection_Status().equals("Naive") || p.getInfection_Status().equals("Recovered")) && !p.isDead())
                 currentNonInfectedList.add(p);
         }
         return currentNonInfectedList;

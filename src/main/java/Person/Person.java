@@ -19,6 +19,7 @@ private RandomWalk randomWalk;
     private double yAxis;
     private Island island;
     private boolean isInfected=false;
+    private boolean isDead=false;
     public String human_genome="";
     public String infection_Status="Naive";
     public int infection_count;
@@ -192,5 +193,13 @@ private RandomWalk randomWalk;
 
     public void setMutation_count(int mutation_count) {
         this.mutation_count = mutation_count;
+    }
+
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public void setDead(boolean dead) {
+        isDead = dead;
     }
 }

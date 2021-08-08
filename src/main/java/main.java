@@ -40,7 +40,8 @@ public class main {
         Map<String, String> fitnesMap = ini.get("fitness_Value");
         Map<String, String> mutationMapTMp = ini.get("gene_length");
         //System.out.println(mutationMapTMp.get(mutationMapTMp.keySet().toArray()[5]));
-
+        int spreadCountPercentage=Integer.parseInt(map.get("spread_count"));
+        int humanPopulation = Integer.parseInt(map.get("human_population"));
         for (Map.Entry<String,String> entry : mutationMapTMp.entrySet())
             mutationMap.put(entry.getKey().charAt(0),((Integer.parseInt(entry.getValue())*30)/1000)==0?1:((Integer.parseInt(entry.getValue())*30)/1000));
 
@@ -81,8 +82,35 @@ public class main {
             //5.inner loop for spread
             for(int j=i;j<=Integer.parseInt(map.get("spread_days"));j++)
             {
+                //infect people loop - daily
                 List<Person> currNonInfectedList= PersonDirectory.getInstance().getCurrentNonInfectedList();
+                for(int k=0;i<(spreadCountPercentage * humanPopulation/100);k++)
+                {
+                    //update noninfected list
+                    currNonInfectedList= PersonDirectory.getInstance().getCurrentNonInfectedList();
+                    Random r=new Random();
+                    Person currPerson=currNonInfectedList.get(r.nextInt(currNonInfectedList.size()));
+                    currPerson.setInfection_count(currPerson.getInfection_count()+1);
+                    currPerson.setMutation_count(mutationPerson.getMutation_count());
+                    currPerson.setRecovery_day(Integer.parseInt(map.get("recovery_days")));
+                    currPerson.setInfected(true);
+                }
 
+                //update all person's properties including recovery_days and status.
+                for(Person p : PersonDirectory.getInstance().getPersonList()){
+
+                    if(p.getRecovery_day()==0)
+                        p.setInfected(false);
+                    if(p.isInfected())
+                        p.setRecovery_day(p.getRecovery_day()-1);
+
+                    //check for person is dead or not
+                    if(p.getRecovery_day()!=0 && !p.isInfected())
+                    {
+                        p.setDead(true);
+                    }
+
+                }
 
             }
 
