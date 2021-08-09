@@ -212,6 +212,7 @@ public class Person extends Position {
         String host_genotype = this.human_genome;
         String host_type = this.infection_Status;
         double U = 0;
+        int rec_day;
         Hashtable<String, List<String>> fitnessHashTable = new Hashtable<>();
         List<Person> currInfectedList = PersonDirectory.getInstance().getCurrentInfectedList(fitnessHashTable.size());
 
@@ -219,24 +220,30 @@ public class Person extends Position {
             if (host_type == "Naive") {
                 U = Double.parseDouble(naive.get("N_A1"));
                 for (Person p : PersonDirectory.getInstance().getPersonList()) {
-                    while (p.getRecovery_day() != 0) {
+                    rec_day = p.getRecovery_day();
+                    while (rec_day != 0) {
                         U = U + 0.2;
+                        rec_day--;
                     }
                 }
             }
             else if (host_type == "Recovered") {
                 U = Double.parseDouble(recovered.get("R_A1"));
                 for (Person p : PersonDirectory.getInstance().getPersonList()) {
-                    while (p.getRecovery_day() != 0) {
+                    rec_day = p.getRecovery_day();
+                    while (rec_day != 0) {
                         U = U + 0.5;
+                        rec_day--;
                     }
                 }
             }
             else if (host_type == "Vaccinated") {
                 U = Double.parseDouble(vaccinated.get("V_A1"));
                 for (Person p : PersonDirectory.getInstance().getPersonList()) {
-                    while (p.getRecovery_day() != 0) {
+                    rec_day = p.getRecovery_day();
+                    while (rec_day != 0) {
                         U = U + 0.7;
+                        rec_day--;
                     }
 
                 }
@@ -246,22 +253,28 @@ public class Person extends Position {
             if (host_type == "Naive") {
                 U = Double.parseDouble(naive.get("N_A2"));
                 for (Person p : PersonDirectory.getInstance().getPersonList()) {
-                    while (p.getRecovery_day() != 0) {
+                    rec_day = p.getRecovery_day();
+                    while (rec_day != 0) {
                         U = U + 0.2;
+                        rec_day--;
                     }
                 }
             } else if (host_type == "Recovered") {
                 U = Double.parseDouble(recovered.get("R_A2"));
                 for (Person p : PersonDirectory.getInstance().getPersonList()) {
-                    while (p.getRecovery_day() != 0) {
+                    rec_day = p.getRecovery_day();
+                    while (rec_day != 0) {
                         U = U + 0.5;
+                        rec_day--;
                     }
                 }
             } else if (host_type == "Vaccinated") {
                 U = Double.parseDouble(vaccinated.get("V_A2"));
                 for (Person p : PersonDirectory.getInstance().getPersonList()) {
-                    while (p.getRecovery_day() != 0) {
+                    rec_day = p.getRecovery_day();
+                    while (rec_day != 0) {
                         U = U + 0.7;
+                        rec_day--;
                     }
                 }
             }
@@ -270,24 +283,30 @@ public class Person extends Position {
                 if (host_type == "Naive") {
                     U = Double.parseDouble(naive.get("N_B1"));
                     for (Person p : PersonDirectory.getInstance().getPersonList()) {
-                        while (p.getRecovery_day() != 0) {
+                        rec_day = p.getRecovery_day();
+                        while (rec_day != 0) {
                             U = U + 0.2;
+                            rec_day--;
                         }
                     }
                 }
                 else if (host_type == "Recovered") {
                     U = Double.parseDouble(recovered.get("R_B1"));
                     for (Person p : PersonDirectory.getInstance().getPersonList()) {
-                        while (p.getRecovery_day() != 0) {
+                        rec_day = p.getRecovery_day();
+                        while (rec_day != 0) {
                             U = U + 0.5;
+                            rec_day--;
                         }
                     }
                 }
                 else if (host_type == "Vaccinated") {
                     U = Double.parseDouble(vaccinated.get("V_B1"));
                     for (Person p : PersonDirectory.getInstance().getPersonList()) {
-                        while (p.getRecovery_day() != 0) {
+                        rec_day = p.getRecovery_day();
+                        while (rec_day != 0) {
                             U = U + 0.7;
+                            rec_day--;
                         }
                     }
                 }
@@ -296,24 +315,30 @@ public class Person extends Position {
                 if (host_type == "Naive") {
                     U = Double.parseDouble(naive.get("N_B2"));
                     for (Person p : PersonDirectory.getInstance().getPersonList()) {
-                        while (p.getRecovery_day() != 0) {
+                        rec_day = p.getRecovery_day();
+                        while (rec_day != 0) {
                             U = U + 0.2;
+                            rec_day--;
                         }
                     }
                 }
                 else if (host_type == "Recovered") {
                     U = Double.parseDouble(recovered.get("R_B2"));
                     for (Person p : PersonDirectory.getInstance().getPersonList()) {
-                        while (p.getRecovery_day() != 0) {
+                        rec_day = p.getRecovery_day();
+                        while (rec_day != 0) {
                             U = U + 0.5;
+                            rec_day--;
                         }
                     }
                 }
                 else if (host_type == "Vaccinated") {
                     U = Double.parseDouble(vaccinated.get("V_B2"));
                     for (Person p : PersonDirectory.getInstance().getPersonList()) {
-                        while (p.getRecovery_day() != 0) {
+                        rec_day = p.getRecovery_day();
+                        while (rec_day != 0) {
                             U = U + 0.7;
+                            rec_day--;
                         }
                     }
                 }
