@@ -5,37 +5,36 @@ import org.ini4j.Ini;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
+import java.util.List;
 
 public class Mutation {
 
     public static HashMap<Integer, Color> mutationColor = new HashMap<>();
     public String genotype;
     public int infection_factor;
-    public static int previousHostFitness = 0;
+    public static double previousHostFitness = 0;
     public static int maxCurrentFitness = 0;
     public static int maxPreviousFitness = 0;
 
-    public static void main(String[] args) throws IOException {
+//    public static void main(String[] args) throws IOException {
+//
+//        int fitness1 = calculateGenotypeFitness("2BCDEFGHIJ", 97);
+//        boolean isVariant1 = calculateMutationFactor("2BCDEFGHIJ", fitness1, fitnessHashTable);
+//
+//        int fitness2 = calculateGenotypeFitness("3BCDEFGHIJ", 96);
+//        boolean isVariant2 = calculateMutationFactor("3BCDEFGHIJ", fitness2, fitnessHashTable);
+//        System.out.println("isVariant2 "+isVariant2);
+//    }
 
-        int fitness1 = calculateGenotypeFitness("2BCDEFGHIJ", 97);
-        boolean isVariant1 = calculateMutationFactor("2BCDEFGHIJ", fitness1);
 
-        int fitness2 = calculateGenotypeFitness("3BCDEFGHIJ", 96);
-        boolean isVariant2 = calculateMutationFactor("3BCDEFGHIJ", fitness2);
-        System.out.println("isVariant2 "+isVariant2);
-    }
-
-
-    public static int calculateGenotypeFitness(String genotype, int infection_factor) throws IOException {
+    public static int calculateGenotypeFitness(String genotype, double infection_factor) throws IOException {
         Ini ini = new Ini(new File("./config.properties"));
         Map<String, String> gene_length = ini.get("gene_length");
         Map<String, String> base_value = ini.get("base_value");
         int baseVal = Integer.parseInt(base_value.get("base"));
         int genotypefitnessValue = 0;
-        int gene_fitness_value = 0;
+        double gene_fitness_value = 0;
         boolean islarger = genotype.length() > 10 ? true : false;
 
         char[] gene = genotype.toCharArray();
@@ -83,7 +82,7 @@ public class Mutation {
     }
 
     //    Check if the mutation is variant
-    public static boolean calculateMutationFactor(String genotype, int currentfitnessValue) throws IOException {
+    public static boolean calculateMutationFactor(String genotype, double currentfitnessValue, Hashtable<String, List<String>> fitnessHashTable) throws IOException {
         Ini ini = new Ini(new File("./config.properties"));
         Map<String, String> map = ini.get("default");
         double dominant_factor = Double.parseDouble(map.get("dominant_factor"));
@@ -95,6 +94,11 @@ public class Mutation {
         maxPreviousFitness = maxCurrentFitness;
         previousHostFitness = currentfitnessValue;
 
+        if(currentfitnessValue > variantThreshold)
+        {
+            //insert into variant directory if mutation is variant
+            insertIntoMutationList(fitnessHashTable.size()+1);
+        }
         return currentfitnessValue > variantThreshold;
     }
 }
