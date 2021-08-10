@@ -95,7 +95,7 @@ public class Simulator extends JPanel implements Runnable {
 
             //put new 12 mutation fitness values in hashtable
 
-
+            MutationFactor();
             //check if value is above variant threshold
             boolean newVariantFlag=Mutation.calculateMutationFactor(newGT,mutationValue,fitnessHashTable);
             //set this after adding all new values in fitness table
@@ -443,6 +443,33 @@ public class Simulator extends JPanel implements Runnable {
         }
         return U;
     }
+    public double MutationFactor() {
+        Map<String, String> naive = ini.get("Naive_infection_factor");
+        Map<String, String> recovered = ini.get("Recovered_infection_factor");
+        Map<String, String> vaccinated = ini.get("Vaccinated_infection_factor");
+//        String host_genotype = human_genome;
+//        String host_type = infection_Status;
+        int U = 0;
+        int rec_day = 10;
+        List<Integer> UFactor = new ArrayList<>();
+        //U = Integer.parseInt(naive.get("N_A1"));
+        for(int i=0; i<4; i++){
+            U=Integer.parseInt(naive.get(naive.keySet().toArray()[i]));
+            UFactor.add(U);
+        }
+        for(int i=0; i<4; i++){
+            U=Integer.parseInt(recovered.get(recovered.keySet().toArray()[i]));
+            UFactor.add(U);
+        }
+        for(int i=0; i<4; i++){
+            U=Integer.parseInt(vaccinated.get(vaccinated.keySet().toArray()[i]));
+            UFactor.add(U);
+        }
 
+        System.out.println("U Factor"+ UFactor);
+        UFactor.add(Integer.parseInt(naive.get("N_A1")));
+
+        return U;
+    }
 
 }
