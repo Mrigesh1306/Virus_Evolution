@@ -30,6 +30,10 @@ public class Person extends Position {
     public int recovery_day;
     public int mutation_count;
 
+    public Person() throws IOException {
+        super();
+    }
+
     public void doRandomMove() {
 
         // Random random=new Random();

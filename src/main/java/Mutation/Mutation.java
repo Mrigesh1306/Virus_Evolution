@@ -101,4 +101,12 @@ public class Mutation {
         }
         return currentfitnessValue > variantThreshold;
     }
+
+    public static HashMap<Integer, Color> getMutationColor() {
+        return mutationColor;
+    }
+
+    public static void setMutationColor(HashMap<Integer, Color> mutationColor) {
+        Mutation.mutationColor = mutationColor;
+    }
 }

@@ -10,6 +10,10 @@ public class Position {
         this.y = y;
     }
 
+    public Position() {
+
+    }
+
     public void rePosition(int x, int y) {
         this.x += x;
         this.y += y;

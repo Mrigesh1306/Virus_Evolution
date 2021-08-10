@@ -19,13 +19,14 @@ import java.util.Timer;
 public class main {
 
 
+
     public static void main(String args[]) throws IOException {
 
-        Simulator s=new Simulator();
-        createGraph();
+        Simulator graph=new Simulator();
+        createGraph(graph);
         //IntializeData();
         //createVirusGenome();
-       //s.startEvolution();
+       graph.initializeLoad();
         //createVirusStrainMap();
         //Virus.Virions.VirionFamily();
 
@@ -52,7 +53,7 @@ public class main {
         });
     }
 
-    private static void createGraph() throws IOException {
+    private static void createGraph(Simulator graph) throws IOException {
         //reading the config file to fetch the value of variables
         Ini ini = new Ini(new File("./config.properties"));
         //connecting the file to map for ease in reading and fetching
@@ -64,7 +65,7 @@ public class main {
         ui.setLayout(new GridLayout(1,3));
 
         //calling the class which creates the graph and passing it to thread to ensure continuous movement
-        Simulator graph = new Simulator();
+
         Thread panelThread = new Thread(graph);
 
         //adding the graph and line charts to main panel and setting the background color
