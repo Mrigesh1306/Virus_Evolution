@@ -79,7 +79,7 @@ public class Mutation {
             int rc=r.nextInt(255);
             int g=r.nextInt(255);
             int b=r.nextInt(255);
-            if(!(rc==255 && g==255 && b==255 || rc==90 && g==255 && b==0 || rc==177 && g==177 && b==177))
+            if(!(rc==255 && g==255 && b==255 || rc==90 && g==255 && b==0 || rc==177 && g==177 && b==177 || rc==0 && g==0 && b==0 ))
             {
                 mutationColor.put(mutationCount,new Color(rc,g,b) );
                break;
