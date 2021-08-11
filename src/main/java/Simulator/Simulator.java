@@ -140,6 +140,7 @@ public class Simulator extends JPanel implements Runnable {
                     currPerson.setMutation_count(mutationPerson.getMutation_count());
                     currPerson.setRecovery_day(Integer.parseInt(map.get("recovery_days")));
                     currPerson.setInfected(true);
+                    currPerson.setMutationColor(currentColor);
                 }
 
                 //update all person's properties including recovery_days and status.
@@ -249,11 +250,7 @@ public class Simulator extends JPanel implements Runnable {
             if(mutationMap.get(randomChar)>0)
             {
                 String CurrMutation="";
-                mutationMap.replace(randomChar,mutationMap.get(randomChar)-1);
-//                for(String k : fitnessHashTable.keySet())
-//                {
-//                    CurrMutation= k;
-//                }
+                mutationMap.replace(randomChar,Integer.parseInt(String.valueOf(mutationMap.get(randomChar)))-1);
 
                 currMutationSb= new StringBuilder(newGT);
 
@@ -261,7 +258,7 @@ public class Simulator extends JPanel implements Runnable {
                 {
                     if(Character.isDigit(currMutationSb.charAt(randomNumber)) && currMutationSb.charAt(randomNumber)!='9')
                     {
-                        currMutationSb.replace(randomNumber,randomNumber+1,String.valueOf(currMutationSb.charAt(randomNumber)+1));
+                        currMutationSb.replace(randomNumber,randomNumber+1, String.valueOf(Integer.parseInt(String.valueOf(currMutationSb.charAt(randomNumber)))+1));
                     }
                     else if(Character.isDigit(currMutationSb.charAt(randomNumber)) && currMutationSb.charAt(randomNumber)=='9')
                     {
@@ -276,7 +273,7 @@ public class Simulator extends JPanel implements Runnable {
 
                     if (randomNumber != 0) {
                         if (Character.isDigit(currMutationSb.charAt(randomNumber+1))) {
-                            currMutationSb.replace(randomNumber + 1, randomNumber + 2, String.valueOf(currMutationSb.charAt(randomNumber + 1) + 1));
+                            currMutationSb.replace(randomNumber + 1, randomNumber + 2, String.valueOf(Integer.parseInt(String.valueOf(currMutationSb.charAt(randomNumber)))+1));
                         } else {
                             currMutationSb.replace(randomNumber + 1, randomNumber + 2, "1");
                         }
@@ -310,6 +307,7 @@ public class Simulator extends JPanel implements Runnable {
     private void UpdateMutationColorMap(int size) {
         mutation.insertIntoMutationList(fitnessHashTable.size());
         currentColor=mutation.getMutationColor().get(fitnessHashTable.size());
+        System.out.println(currentColor);
     }
 
 
@@ -345,8 +343,8 @@ public class Simulator extends JPanel implements Runnable {
             VirusStrainMap.updateLbl();
 
             //repainting the graph with updates
-            Simulator.this.repaint();
-            presentDay++;
+           // Simulator.this.repaint();
+            //presentDay++;
 
             //logging the data
 //            if (presentDay % 100 == 0) {

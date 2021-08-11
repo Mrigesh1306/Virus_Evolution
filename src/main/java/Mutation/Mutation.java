@@ -86,7 +86,7 @@ public class Mutation {
     //Inserts every mutation into this HashMap and assigns random color
     public static void insertIntoMutationList(int mutationCount) {
         Random r = new Random();
-        new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255));
+        //new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255));
         while(true)
         {
             int rc=r.nextInt(255);
