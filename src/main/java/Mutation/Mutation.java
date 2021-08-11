@@ -14,55 +14,55 @@ public class Mutation {
     public String genotype;
     public int infection_factor;
     public static double previousHostFitness = 30180;
-    public static int maxCurrentFitness = 0;
-    public static int maxPreviousFitness = 30180;
+    public static double maxCurrentFitness = 0;
+    public static double maxPreviousFitness = 30180;
 
 
     public static void main(String[] args) throws IOException {
 
-        int fitness1 = calculateGenotypeFitness("ABCDE1GHIJ", 96);
-        Hashtable<String, List<String>> fitnessHashTable = null;
-        boolean isVariant1 = calculateMutationFactor("ABCDE1GHIJ", fitness1, fitnessHashTable);
-        System.out.println("isVariant1 "+isVariant1);
-        int fitness2 = calculateGenotypeFitness("AB1DE1GHIJ", 96);
-        Hashtable<String, List<String>> fitnessHashTable2 = null;
-        boolean isVariant2 = calculateMutationFactor("AB1DE1GHIJ", fitness2, fitnessHashTable);
-        System.out.println("isVariant2 "+isVariant2);
-
-        int fitness3 = calculateGenotypeFitness("ABC1111111", 96);
-        Hashtable<String, List<String>> fitnessHashTable3 = null;
-        boolean isVariant3 = calculateMutationFactor("ABC111111", fitness3, fitnessHashTable);
-        System.out.println("isVariant3 "+isVariant3);
-
-        int fitness4 = calculateGenotypeFitness("1BC1111111", 80);
-        Hashtable<String, List<String>> fitnessHashTable4 = null;
-        boolean isVariant4 = calculateMutationFactor("1BC1111111", fitness4, fitnessHashTable);
-        System.out.println("isVariant4 "+isVariant4);
+//        int fitness1 = calculateGenotypeFitness("ABCDE1GHIJ", 96);
+//        Hashtable<String, List<String>> fitnessHashTable = null;
+//        boolean isVariant1 = calculateMutationFactor("ABCDE1GHIJ", fitness1, fitnessHashTable);
+//        System.out.println("isVariant1 "+isVariant1);
+//        int fitness2 = calculateGenotypeFitness("AB1DE1GHIJ", 96);
+//        Hashtable<String, List<String>> fitnessHashTable2 = null;
+//        boolean isVariant2 = calculateMutationFactor("AB1DE1GHIJ", fitness2, fitnessHashTable);
+//        System.out.println("isVariant2 "+isVariant2);
+//
+//        int fitness3 = calculateGenotypeFitness("ABC1111111", 96);
+//        Hashtable<String, List<String>> fitnessHashTable3 = null;
+//        boolean isVariant3 = calculateMutationFactor("ABC111111", fitness3, fitnessHashTable);
+//        System.out.println("isVariant3 "+isVariant3);
+//
+//        int fitness4 = calculateGenotypeFitness("1BC1111111", 80);
+//        Hashtable<String, List<String>> fitnessHashTable4 = null;
+//        boolean isVariant4 = calculateMutationFactor("1BC1111111", fitness4, fitnessHashTable);
+//        System.out.println("isVariant4 "+isVariant4);
     }
 
 
-    public static int calculateGenotypeFitness(String genotype, double infection_factor) throws IOException {
+    public static double calculateGenotypeFitness(String genotype, double infection_factor) throws IOException {
         Ini ini = new Ini(new File("./config.properties"));
         Map<String, String> gene_length = ini.get("gene_length");
         Map<String, String> base_value = ini.get("base_value");
-        int baseVal = Integer.parseInt(base_value.get("base"));
-        int genotypefitnessValue = 0;
+        double baseVal = Double.parseDouble(base_value.get("base"));
+        double genotypefitnessValue = 0;
         double gene_fitness_value = 0;
         boolean islarger = genotype.length() > 10 ? true : false;
 
         char[] gene = genotype.toCharArray();
-        int j = 0;
-        for (int i = 0; i < genotype.length(); i++) {
-            int geneLength = Integer.parseInt(gene_length.get(gene_length.keySet().toArray()[j]));
+        double j = 0;
+        for (double i = 0; i < genotype.length(); i++) {
+            int geneLength = Integer.parseInt(gene_length.get(gene_length.keySet().toArray()[(int) j]));
 
-            if (Character.isAlphabetic(gene[i])) {
+            if (Character.isAlphabetic(gene[(int) i])) {
 
                 gene_fitness_value = (3 * baseVal) * geneLength;
 
-            } else if (Character.isDigit(gene[i])) {
+            } else if (Character.isDigit(gene[(int) i])) {
                 if (islarger) {
-                    int sum = Integer.parseInt(Character.toString(gene[i])) * 10 +
-                            Integer.parseInt(Character.toString(gene[i + 1]));
+                    int sum = Integer.parseInt(Character.toString(gene[(int) i])) * 10 +
+                            Integer.parseInt(Character.toString(gene[(int) (i + 1)]));
 
                     gene_fitness_value = ((2 * baseVal)
                             + infection_factor * sum)
@@ -71,7 +71,7 @@ public class Mutation {
                     i = i + 2;
                 } else {
                     gene_fitness_value = ((2 * baseVal)
-                            + infection_factor * Integer.parseInt(Character.toString(gene[i])))
+                            + infection_factor * Integer.parseInt(Character.toString(gene[(int) i])))
                             * geneLength;
                 }
             }

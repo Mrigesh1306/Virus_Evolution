@@ -11,7 +11,7 @@ public class MutationTest {
     @Test
     public void calculateFitnessValue() throws IOException {
        Mutation m=new Mutation();
-       int result=m.calculateGenotypeFitness("ABCDEFGHIJ",100);
+       double result=m.calculateGenotypeFitness("ABCDEFGHIJ",100);
        System.out.println(result);
        assertEquals(30180,result);
     }

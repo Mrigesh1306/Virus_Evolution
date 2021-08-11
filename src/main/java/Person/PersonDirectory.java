@@ -1,6 +1,7 @@
 package Person;
 
 import Island.Island;
+import Mutation.Mutation;
 import org.ini4j.Ini;
 
 import java.awt.*;
@@ -111,7 +112,7 @@ public class PersonDirectory {
 
     public int getPersonMutationCount(){
         List<Person> person = new ArrayList<Person>();
-        HashMap<Integer, Color> mutationColor = new HashMap<>();
+        HashMap<Integer, Color> mutationColor = Mutation.mutationColor;
         int mutation=0;
         for(Integer i : mutationColor.keySet()){
 
@@ -125,12 +126,12 @@ public class PersonDirectory {
         System.out.println("mutation "+mutation);
         return mutation;
     }
-    int currentInfectedCount= 0;
-    int currentNonInfectedCount = 0;
-    int currentVaccinatedCount = 0;
+
+
+
 
     public int getInfectedCount(int currMutationCount){
-
+        int currentInfectedCount= 0;
         for(Person p : PersonList)
         {
             if(p.isInfected() && p.getMutation_count()== currMutationCount && !p.isDead())
@@ -141,7 +142,7 @@ public class PersonDirectory {
     }
 
     public  int getRecoveredCount(){
-
+        int currentNonInfectedCount = 0;
         for(Person p : PersonList)
         {
             if(!p.isInfected() && (p.getInfection_Status().equals("Naive") || p.getInfection_Status().equals("Recovered")) && !p.isDead())
@@ -152,7 +153,7 @@ public class PersonDirectory {
     }
 
     public int getVaccinatedCount(){
-
+        int currentVaccinatedCount = 0;
         for(Person p : PersonList)
         {
             if(p.isVaccinated && p.getInfection_Status().equals("Vaccinated") && !p.isDead())
