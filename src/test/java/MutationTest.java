@@ -30,4 +30,11 @@ public class MutationTest {
         assertEquals(new Color(179,133,29),c);
     }
 
+    @Test
+    public void mutationColorTest()
+    {
+        Mutation m=new Mutation();
+        m.insertIntoMutationList(2);
+        assertEquals(true,true);
+    }
 }

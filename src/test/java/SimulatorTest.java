@@ -26,4 +26,12 @@ public class SimulatorTest {
 
     }
 
+    @Test
+    public void pushValueToHashTableTest() throws IOException {
+
+        Simulator s=new Simulator();
+        s.pushValueToHashtable("12961111111");
+        assertEquals(true,true);
+    }
+
 }

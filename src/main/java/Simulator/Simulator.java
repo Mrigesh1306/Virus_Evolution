@@ -23,6 +23,7 @@ public class Simulator extends JPanel implements Runnable {
     Map<String, String> map = ini.get("default");
     Map<String, String> resident_status = ini.get("resident_status");
     Map<String, String> fitnesMap = ini.get("fitness_Value");
+    Color currentColor=new Color(255, 255, 255);
 
     Person mutationPerson;
     String newGT="";
@@ -32,6 +33,7 @@ public class Simulator extends JPanel implements Runnable {
     int humanPopulation = Integer.parseInt(map.get("human_population"));
     int numberOfDays=Integer.parseInt(map.get("days"));
     int spreadDays = Integer.parseInt(map.get("spread_days"));
+    int MaxMutation=Integer.parseInt(map.get("mutation"));
 
     int presentDay =0;
     int eachSpreadDay=0;
@@ -46,7 +48,7 @@ public class Simulator extends JPanel implements Runnable {
     //constructor
     public Simulator() throws IOException {
         super();
-        this.setBackground(new Color(0, 0, 0));
+        this.setBackground(new Color(224, 195, 145));
     }
 
     @Override
@@ -56,21 +58,48 @@ public class Simulator extends JPanel implements Runnable {
         List<Person> people = PersonDirectory.getInstance().getPersonList();
         mutation = new Mutation();
         for (Person person : people) {
-            graphics.setColor(new Color(0xAAAAAA));
-            graphics.setColor(mutation.fetchmutationColor(person.getMutation_count()));
+            if(Mutation.getMutationColor().containsKey(person.getMutation_count()))
+            {
+                graphics.setColor(mutation.fetchmutationColor(person.getMutation_count()));
+            }
+            else {
+                if(person.isInfected())
+                {
+                    graphics.setColor(currentColor);
+                }
+                else if(person.isInfected()) {
+
+                     switch (person.infection_Status)
+                     {
+                         case "Naive" : {
+                             graphics.setColor(new Color(255,255,255));
+                             break;
+                         }
+                         case "Recovered" : {
+                             graphics.setColor(new Color(177, 177, 177));
+                             break;
+                         }
+                         case "Vaccinated" : {
+                             graphics.setColor(new Color(90, 255, 0));
+                             break;
+                         }
+                     }
+                }
+            }
+
             person.checkHealth();
-            graphics.fillOval(person.getX(), person.getY(), 20, 20);
+            graphics.fillOval(person.getX(), person.getY(), 5, 5);
         }
         try {
 
             startEvolution();
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
 
     }
 
-    public void startEvolution() throws IOException {
+    public void startEvolution() throws IOException, InterruptedException {
 
         //number of days of simulation
         if(presentDay%spreadDays==0) {
@@ -78,18 +107,22 @@ public class Simulator extends JPanel implements Runnable {
             //2. calculate new genotype
             String newGT = calculateNewGenotype();
 
-            //3. fitness values of genotype
-            //akshay function of U
+            //put new 12 mutation fitness values in hashtable
+            pushValueToHashtable(newGT);
+
+            //set this after adding all new values in fitness table
+            mutationPerson.setMutation_count(fitnessHashTable.size());
+
+            //3. fitness values of genotype of one selected person (host wise)
             double mutationFactor = InfectionFactor(mutationPerson.getHuman_genome(), mutationPerson.getInfection_Status(), mutationPerson);
             double mutationValue = Mutation.calculateGenotypeFitness(newGT, mutationFactor);
 
-            //put new 12 mutation fitness values in hashtable
-
-
             //check if value is above variant threshold
             newVariantFlag = Mutation.calculateMutationFactor(newGT, mutationValue, fitnessHashTable);
-            //set this after adding all new values in fitness table
-            mutationPerson.setMutation_count(fitnessHashTable.size());
+            if(newVariantFlag)
+            {
+                currentColor=Mutation.getMutationColor().get(mutationPerson.getMutation_count());
+            }
         }
             //5.inner loop for spread
 
@@ -123,22 +156,27 @@ public class Simulator extends JPanel implements Runnable {
 
                 }
 
-                //4. repaint the simulation
-                //Simulator.this.repaint();
-
-
-
-
         //break the paint() method
-
         System.out.println(presentDay);
         if(presentDay<numberOfDays) {
+            Thread.sleep(500);
             presentDay++;
             repaint();
         }else
             System.exit(0);
 
 
+    }
+
+    public void pushValueToHashtable(String newGT) throws IOException {
+        List<Integer> UFactorPerMutation= MutationFactor();
+        List<String> hostFitnessValues=new ArrayList<>();
+        for(Integer i: UFactorPerMutation)
+        {
+            double eachFitnessValue = Mutation.calculateGenotypeFitness(newGT, i);
+            hostFitnessValues.add(String.valueOf(eachFitnessValue));
+        }
+        fitnessHashTable.put(newGT,hostFitnessValues);
     }
 
     public void loadHashTable() throws IOException {
@@ -150,12 +188,12 @@ public class Simulator extends JPanel implements Runnable {
         fitnessHashTable.put(fitnesMap.entrySet().iterator().next().getKey(),fitnessVal);
     }
 
-    private void generateMutationMap() throws IOException {
+    public void generateMutationMap() throws IOException {
         //reading the config file to fetch the value of variables
         Ini ini = new Ini(new File("./config.properties"));
         Map<String, String> mutationMapTMp = ini.get("gene_length");
         for (Map.Entry<String,String> entry : mutationMapTMp.entrySet())
-            mutationMap.put(entry.getKey().charAt(0),((Integer.parseInt(entry.getValue())*30)/1000)==0?1:((Integer.parseInt(entry.getValue())*30)/1000));
+            mutationMap.put(entry.getKey().charAt(0),((Integer.parseInt(entry.getValue())*MaxMutation)/humanPopulation)==0?1:((Integer.parseInt(entry.getValue())*MaxMutation)/humanPopulation));
     }
 
     @NotNull
@@ -241,9 +279,14 @@ public class Simulator extends JPanel implements Runnable {
     public void initializeLoad() throws IOException {
         generateMutationMap();
         loadHashTable();
+        UpdateMutationColorMap(fitnessHashTable.size());
         mutationPerson = getMutationPerson(map);
 
 
+    }
+
+    private void UpdateMutationColorMap(int size) {
+        Mutation.insertIntoMutationList(fitnessHashTable.size());
     }
 
     class MyTimerTask extends TimerTask {
@@ -271,7 +314,7 @@ public class Simulator extends JPanel implements Runnable {
     //Demo Code *Needs to be updated*
     @Override
     public void run() {
-        timer.schedule(new MyTimerTask(), 0, 100);
+        timer.schedule(new MyTimerTask(), 0, 2000);
         if(playing) {
             actualTicks++;
             if(actualTicks%speed==0) {
