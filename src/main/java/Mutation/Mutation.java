@@ -17,15 +17,28 @@ public class Mutation {
     public static int maxCurrentFitness = 0;
     public static int maxPreviousFitness = 30180;
 
-//    public static void main(String[] args) throws IOException {
-//
-//        int fitness1 = calculateGenotypeFitness("2BCDEFGHIJ", 97);
-//        boolean isVariant1 = calculateMutationFactor("2BCDEFGHIJ", fitness1, fitnessHashTable);
-//
-//        int fitness2 = calculateGenotypeFitness("3BCDEFGHIJ", 96);
-//        boolean isVariant2 = calculateMutationFactor("3BCDEFGHIJ", fitness2, fitnessHashTable);
-//        System.out.println("isVariant2 "+isVariant2);
-//    }
+
+    public static void main(String[] args) throws IOException {
+
+        int fitness1 = calculateGenotypeFitness("ABCDE1GHIJ", 96);
+        Hashtable<String, List<String>> fitnessHashTable = null;
+        boolean isVariant1 = calculateMutationFactor("ABCDE1GHIJ", fitness1, fitnessHashTable);
+        System.out.println("isVariant1 "+isVariant1);
+        int fitness2 = calculateGenotypeFitness("AB1DE1GHIJ", 96);
+        Hashtable<String, List<String>> fitnessHashTable2 = null;
+        boolean isVariant2 = calculateMutationFactor("AB1DE1GHIJ", fitness2, fitnessHashTable);
+        System.out.println("isVariant2 "+isVariant2);
+
+        int fitness3 = calculateGenotypeFitness("ABC1111111", 96);
+        Hashtable<String, List<String>> fitnessHashTable3 = null;
+        boolean isVariant3 = calculateMutationFactor("ABC111111", fitness3, fitnessHashTable);
+        System.out.println("isVariant3 "+isVariant3);
+
+        int fitness4 = calculateGenotypeFitness("1BC1111111", 80);
+        Hashtable<String, List<String>> fitnessHashTable4 = null;
+        boolean isVariant4 = calculateMutationFactor("1BC1111111", fitness4, fitnessHashTable);
+        System.out.println("isVariant4 "+isVariant4);
+    }
 
 
     public static int calculateGenotypeFitness(String genotype, double infection_factor) throws IOException {
@@ -111,8 +124,10 @@ public class Mutation {
         if(currentfitnessValue > variantThreshold)
         {
             //insert into variant directory if mutation is variant
-            insertIntoMutationList(fitnessHashTable.size()+1);
+          //  insertIntoMutationList(fitnessHashTable.size()+1);
         }
+        System.out.println("currentfitnessValue "+currentfitnessValue);
+        System.out.println("variantThreshold "+variantThreshold);
         return currentfitnessValue > variantThreshold;
     }
 

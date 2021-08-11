@@ -1,20 +1,13 @@
-import Person.Person;
-import Person.PersonDirectory;
 import Simulator.Simulator;
 import Virus.VirusGenomeJFrameTest;
 import Virus.VirusStrainMap;
 import org.ini4j.Ini;
-import Virus.Virions;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.*;
-import java.util.List;
-import java.util.Timer;
+import java.util.Map;
 
 public class main {
 
@@ -27,17 +20,17 @@ public class main {
         //IntializeData();
         //createVirusGenome();
        graph.initializeLoad();
-        //createVirusStrainMap();
+        createVirusStrainMap(graph);
         //Virus.Virions.VirionFamily();
 
     }
 
 
 
-    private static void createVirusStrainMap() throws IOException {
-        VirusStrainMap vmap =  new VirusStrainMap();
-        Simulator sim = new Simulator(vmap);
-        //new Timer().schedule(sim, 10, 15);
+    private static void createVirusStrainMap(Simulator graph) throws IOException {
+//        VirusStrainMap vmap =  new VirusStrainMap(graph);
+//        Simulator sim = new Simulator(vmap);
+//        new Timer().schedule(sim, 10, 15);
     }
 
 
@@ -70,7 +63,7 @@ public class main {
 
         //adding the graph and line charts to main panel and setting the background color
         ui.add(graph);
-        //ui.add(new Charts());
+        ui.add(new VirusStrainMap());
         ui.setBackground(Color.BLACK);
 
         //adding the ui to frame and adjusting its attribute
@@ -78,7 +71,7 @@ public class main {
         frame.setVisible(true);
         frame.setTitle(map.get("virus_simulation")+" of "+map.get("city_population")+" Residents of Boston");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
+        frame.setSize(1200, 600);
         frame.setResizable(false);
         frame.setLocation(50, 50);
 

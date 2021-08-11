@@ -3,12 +3,11 @@ package Person;
 import Island.Island;
 import org.ini4j.Ini;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class PersonDirectory {
 
@@ -108,5 +107,58 @@ public class PersonDirectory {
                 currentNonInfectedList.add(p);
         }
         return currentNonInfectedList;
+    }
+
+    public int getPersonMutationCount(){
+        List<Person> person = new ArrayList<Person>();
+        HashMap<Integer, Color> mutationColor = new HashMap<>();
+        int mutation=0;
+        for(Integer i : mutationColor.keySet()){
+
+            for(Person p : PersonList){
+
+                if(i.equals(p.mutation_count)){
+                    mutation++;
+                }
+            }
+        }
+        System.out.println("mutation "+mutation);
+        return mutation;
+    }
+    int currentInfectedCount= 0;
+    int currentNonInfectedCount = 0;
+    int currentVaccinatedCount = 0;
+
+    public int getInfectedCount(int currMutationCount){
+
+        for(Person p : PersonList)
+        {
+            if(p.isInfected() && p.getMutation_count()== currMutationCount && !p.isDead())
+                currentInfectedCount++;
+        }
+
+        return currentInfectedCount;
+    }
+
+    public  int getRecoveredCount(){
+
+        for(Person p : PersonList)
+        {
+            if(!p.isInfected() && (p.getInfection_Status().equals("Naive") || p.getInfection_Status().equals("Recovered")) && !p.isDead())
+                currentNonInfectedCount++;
+        }
+        return currentNonInfectedCount;
+
+    }
+
+    public int getVaccinatedCount(){
+
+        for(Person p : PersonList)
+        {
+            if(p.isVaccinated && p.getInfection_Status().equals("Vaccinated") && !p.isDead())
+            currentVaccinatedCount++;
+        }
+        return currentVaccinatedCount;
+
     }
 }

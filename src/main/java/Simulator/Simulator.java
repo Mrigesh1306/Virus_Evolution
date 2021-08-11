@@ -67,11 +67,11 @@ public class Simulator extends JPanel implements Runnable {
             else {
                 if(person.isInfected())
                 {
-                    graphics.setColor(currentColor);
+                    graphics.setColor(person.getMutationColor());
                 }
                 else if(!person.isInfected()) {
 
-                     switch (person.infection_Status)
+                    switch (person.getInfection_Status())
                      {
                          case "Naive" : {
                              graphics.setColor(new Color(255,255,255));
@@ -117,13 +117,13 @@ public class Simulator extends JPanel implements Runnable {
 
             //3. fitness values of genotype of one selected person (host wise)
             double mutationFactor = InfectionFactor(mutationPerson.getHuman_genome(), mutationPerson.getInfection_Status(), mutationPerson);
-            double mutationValue = Mutation.calculateGenotypeFitness(newGT, mutationFactor);
+            double mutationValue = mutation.calculateGenotypeFitness(newGT, mutationFactor);
 
             //check if value is above variant threshold
-            newVariantFlag = Mutation.calculateMutationFactor(newGT, mutationValue, fitnessHashTable);
+            newVariantFlag = mutation.calculateMutationFactor(newGT, mutationValue, fitnessHashTable);
             if(newVariantFlag)
             {
-                currentColor=Mutation.getMutationColor().get(mutationPerson.getMutation_count());
+                currentColor=mutation.getMutationColor().get(mutationPerson.getMutation_count());
             }
         }
             //5.inner loop for spread
@@ -145,8 +145,12 @@ public class Simulator extends JPanel implements Runnable {
                 //update all person's properties including recovery_days and status.
                 for(Person p : PersonDirectory.getInstance().getPersonList()){
 
-                    if(p.getRecovery_day()==0)
+                    if(p.getRecovery_day()==0 && p.isInfected())
+                    {
                         p.setInfected(false);
+                        p.setInfection_Status("Recovered");
+                        p.setMutationColor(new Color(177,177,177));
+                    }
                     if(p.isInfected())
                         p.setRecovery_day(p.getRecovery_day()-1);
 
@@ -191,7 +195,7 @@ public class Simulator extends JPanel implements Runnable {
         List<String> hostFitnessValues=new ArrayList<>();
         for(Integer i: UFactorPerMutation)
         {
-            double eachFitnessValue = Mutation.calculateGenotypeFitness(newGT, i);
+            double eachFitnessValue = mutation.calculateGenotypeFitness(newGT, i);
             hostFitnessValues.add(String.valueOf(eachFitnessValue));
         }
         fitnessHashTable.put(newGT,hostFitnessValues);
@@ -304,17 +308,10 @@ public class Simulator extends JPanel implements Runnable {
     }
 
     private void UpdateMutationColorMap(int size) {
-        Mutation.insertIntoMutationList(fitnessHashTable.size());
-        currentColor=Mutation.getMutationColor().get(fitnessHashTable.size());
+        mutation.insertIntoMutationList(fitnessHashTable.size());
+        currentColor=mutation.getMutationColor().get(fitnessHashTable.size());
     }
 
-    class MyTimerTask extends TimerTask {
-        @Override
-        public void run() {
-
-            Simulator.this.repaint();
-        }
-    }
 
     // end
 
@@ -331,23 +328,37 @@ public class Simulator extends JPanel implements Runnable {
     }
 
     //Demo Code *Needs to be updated*
+    class MyTimerTask extends TimerTask {
+        @Override
+        public void run() {
+            //adding the updated data to series in Charts class to update the charts
+            VirusStrainMap.getSeries().add(presentDay/10, PersonDirectory.getInstance().getInfectedCount(fitnessHashTable.size()));
+            VirusStrainMap.getSeries2().add(presentDay/10, PersonDirectory.getInstance().getRecoveredCount());
+            VirusStrainMap.getSeries3().add(presentDay/10, PersonDirectory.getInstance().getVaccinatedCount());
+
+            //updating the map in Charts class to update the label data along with graph
+            VirusStrainMap.data.put("Total Population: ", Integer.parseInt(map.get("human_population")));
+            VirusStrainMap.data.put("Total Infected People: ", PersonDirectory.getInstance().getInfectedCount(fitnessHashTable.size()));
+            VirusStrainMap.data.put("Total Recovered Cases: ", PersonDirectory.getInstance().getRecoveredCount());
+            VirusStrainMap.data.put("Total Vaccinated Patients: ", PersonDirectory.getInstance().getVaccinatedCount());
+
+            VirusStrainMap.updateLbl();
+
+            //repainting the graph with updates
+            Simulator.this.repaint();
+            presentDay++;
+
+            //logging the data
+//            if (presentDay % 100 == 0) {
+//                setDosesPerDay();
+//                System.out.println("Time: " + pandemicDay / 10 + " days;Vaccinated people: " + ResidentDirectory.getInstance().getVaccinatedResidents() + ";Normal people: " + ResidentDirectory.getInstance().getResidentNumberbyStatus(Integer.parseInt(resident_status.get("negative"))) + " ;Suspected patients: " + ResidentDirectory.getInstance().getResidentNumberbyStatus(Integer.parseInt(resident_status.get("suspected"))) + " ;Positive patients: " + ResidentDirectory.getInstance().getResidentNumberbyStatus(Integer.parseInt(resident_status.get("positive"))) + " ;Cured: " + ResidentDirectory.getInstance().getCuredResidents() + " ;Super Spreaders: " + ResidentDirectory.getInstance().getSuperSpreaders() + " ;Dead: " + ResidentDirectory.getInstance().getResidentNumberbyStatus(Integer.parseInt(resident_status.get("dead"))));
+//            }
+       }
+    }
+
     @Override
     public void run() {
-        timer.schedule(new MyTimerTask(), 0, 2000);
-        if(playing) {
-            actualTicks++;
-            if(actualTicks%speed==0) {
-                simTicks++;
-                vmap.mut1_infected++;
-                vmap.mut2_infected++;
-                vmap.mut3_infected++;
-                //canvas.repaint();
-                vmap.updateChart();
-                if(simTicks>18000) stopSim();
-                //Map.instance.update();
-
-            }
-        }
+        timer.schedule(new MyTimerTask(), 0, 100);
     }
 
 
