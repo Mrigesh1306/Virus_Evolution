@@ -69,7 +69,7 @@ public class main {
         //adding the ui to frame and adjusting its attribute
         frame.add(ui);
         frame.setVisible(true);
-        frame.setTitle(map.get("virus_simulation")+" of "+map.get("city_population")+" Residents of Boston");
+        frame.setTitle(map.get("virus_evolution")+" of "+map.get("human_population")+" Residents on Island");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1200, 600);
         frame.setResizable(false);
