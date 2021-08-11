@@ -35,7 +35,7 @@ public class Simulator extends JPanel implements Runnable {
     int spreadDays = Integer.parseInt(map.get("spread_days"));
     int MaxMutation=Integer.parseInt(map.get("mutation"));
 
-    int presentDay =0;
+    int presentDay =1;
     int eachSpreadDay=0;
 
     public Mutation mutation = new Mutation();
@@ -67,7 +67,7 @@ public class Simulator extends JPanel implements Runnable {
                 {
                     graphics.setColor(currentColor);
                 }
-                else if(person.isInfected()) {
+                else if(!person.isInfected()) {
 
                      switch (person.infection_Status)
                      {
@@ -105,7 +105,7 @@ public class Simulator extends JPanel implements Runnable {
         if(presentDay%spreadDays==0) {
 
             //2. calculate new genotype
-            String newGT = calculateNewGenotype();
+            newGT = calculateNewGenotype();
 
             //put new 12 mutation fitness values in hashtable
             pushValueToHashtable(newGT);
@@ -217,7 +217,7 @@ public class Simulator extends JPanel implements Runnable {
         return mutationPerson;
     }
 
-    public static String calculateNewGenotype() {
+    public String calculateNewGenotype() {
 
         StringBuilder currMutationSb;
         while(true){
@@ -228,12 +228,12 @@ public class Simulator extends JPanel implements Runnable {
             {
                 String CurrMutation="";
                 mutationMap.replace(randomChar,mutationMap.get(randomChar)-1);
-                for(String k : fitnessHashTable.keySet())
-                {
-                    CurrMutation= k;
-                }
+//                for(String k : fitnessHashTable.keySet())
+//                {
+//                    CurrMutation= k;
+//                }
 
-                currMutationSb= new StringBuilder(CurrMutation);
+                currMutationSb= new StringBuilder(newGT);
 
                 if(currMutationSb.length()==10)
                 {
@@ -287,6 +287,7 @@ public class Simulator extends JPanel implements Runnable {
 
     private void UpdateMutationColorMap(int size) {
         Mutation.insertIntoMutationList(fitnessHashTable.size());
+        currentColor=Mutation.getMutationColor().get(fitnessHashTable.size());
     }
 
     class MyTimerTask extends TimerTask {

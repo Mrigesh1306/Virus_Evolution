@@ -13,9 +13,9 @@ public class Mutation {
     public static HashMap<Integer, Color> mutationColor = new HashMap<>();
     public String genotype;
     public int infection_factor;
-    public static double previousHostFitness = 0;
+    public static double previousHostFitness = 30180;
     public static int maxCurrentFitness = 0;
-    public static int maxPreviousFitness = 0;
+    public static int maxPreviousFitness = 30180;
 
 //    public static void main(String[] args) throws IOException {
 //
