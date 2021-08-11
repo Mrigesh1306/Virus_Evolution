@@ -99,4 +99,14 @@ public class PersonDirectory {
         return currentNonInfectedList;
     }
 
+    public List<Person> getCurrentNonInfectedAndNonVaccinatedList()
+    {
+        List<Person> currentNonInfectedList=new ArrayList<Person>();
+        for(Person p : PersonList)
+        {
+            if(!p.isInfected() && (p.getInfection_Status().equals("Naive") || p.getInfection_Status().equals("Recovered")) && !p.isDead() && !p.getInfection_Status().equals("Vaccinated"))
+                currentNonInfectedList.add(p);
+        }
+        return currentNonInfectedList;
+    }
 }

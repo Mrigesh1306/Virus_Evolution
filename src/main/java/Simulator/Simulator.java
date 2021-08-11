@@ -34,6 +34,9 @@ public class Simulator extends JPanel implements Runnable {
     int numberOfDays=Integer.parseInt(map.get("days"));
     int spreadDays = Integer.parseInt(map.get("spread_days"));
     int MaxMutation=Integer.parseInt(map.get("mutation"));
+    float vaccineRate=Float.parseFloat(map.get("vaccination_rate"));
+
+    int dailyVaccination = (int)(vaccineRate*numberOfDays)/humanPopulation ;
 
     int presentDay =1;
     int eachSpreadDay=0;
@@ -56,9 +59,8 @@ public class Simulator extends JPanel implements Runnable {
 
         super.paint(graphics);
         List<Person> people = PersonDirectory.getInstance().getPersonList();
-        mutation = new Mutation();
         for (Person person : people) {
-            if(Mutation.getMutationColor().containsKey(person.getMutation_count()))
+            if(mutation.getMutationColor().containsKey(person.getMutation_count()))
             {
                 graphics.setColor(mutation.fetchmutationColor(person.getMutation_count()));
             }
@@ -157,9 +159,20 @@ public class Simulator extends JPanel implements Runnable {
                 }
 
                 //vaccination logic
+
         if(presentDay>(numberOfDays/2))
         {
-            //for()
+            for(int i=1;i<=dailyVaccination;i++)
+            {
+                List<Person> currentNonPersonList=PersonDirectory.getInstance().getCurrentNonInfectedAndNonVaccinatedList();
+                Random random=new Random();
+                int number=random.nextInt(currentNonPersonList.size());
+                Person p=currentNonPersonList.get(number);
+                p.setInfection_Status("Vaccinated");
+                p.setVaccinated(true);
+
+
+            }
         }
         //break the paint() method
         System.out.println(presentDay);
@@ -353,140 +366,104 @@ public class Simulator extends JPanel implements Runnable {
         Map<String, String> naive = ini.get("Naive_infection_factor");
         Map<String, String> recovered = ini.get("Recovered_infection_factor");
         Map<String, String> vaccinated = ini.get("Vaccinated_infection_factor");
-        String host_genotype = person.human_genome;
-        String host_type = person.infection_Status;
+        String host_genotype = person.getHuman_genome();
+        String host_type = person.getInfection_Status();
         double U = 0;
-        int rec_day;
+        int rec_day = 10;
         Hashtable<String, List<String>> fitnessHashTable = new Hashtable<>();
         List<Person> currInfectedList = PersonDirectory.getInstance().getCurrentInfectedList(fitnessHashTable.size());
-
         if (host_genotype == "A1") {
             if (host_type == "Naive") {
                 U = Double.parseDouble(naive.get("N_A1"));
-                for (Person p : PersonDirectory.getInstance().getPersonList()) {
-                    rec_day = p.getRecovery_day();
-                    while (rec_day != 0) {
-                        U = U + 0.2;
-                        rec_day--;
-                    }
+                while (rec_day != 0) {
+                    U = U + 0.2;
+                    rec_day--;
                 }
             }
             else if (host_type == "Recovered") {
                 U = Double.parseDouble(recovered.get("R_A1"));
-                for (Person p : PersonDirectory.getInstance().getPersonList()) {
-                    rec_day = p.getRecovery_day();
-                    while (rec_day != 0) {
-                        U = U + 0.5;
-                        rec_day--;
-                    }
+                while (rec_day != 0) {
+                    U = U + 0.5;
+                    rec_day--;
                 }
             }
             else if (host_type == "Vaccinated") {
                 U = Double.parseDouble(vaccinated.get("V_A1"));
-                for (Person p : PersonDirectory.getInstance().getPersonList()) {
-                    rec_day = p.getRecovery_day();
-                    while (rec_day != 0) {
-                        U = U + 0.7;
-                        rec_day--;
-                    }
-
+                while (rec_day != 0) {
+                    U = U + 0.7;
+                    rec_day--;
                 }
+
             }
         }
         else if (host_genotype == "A2") {
             if (host_type == "Naive") {
                 U = Double.parseDouble(naive.get("N_A2"));
-                for (Person p : PersonDirectory.getInstance().getPersonList()) {
-                    rec_day = p.getRecovery_day();
-                    while (rec_day != 0) {
-                        U = U + 0.2;
-                        rec_day--;
-                    }
+                while (rec_day != 0) {
+                    U = U + 0.2;
+                    rec_day--;
                 }
-            } else if (host_type == "Recovered") {
+            }
+            else if (host_type == "Recovered") {
                 U = Double.parseDouble(recovered.get("R_A2"));
-                for (Person p : PersonDirectory.getInstance().getPersonList()) {
-                    rec_day = p.getRecovery_day();
-                    while (rec_day != 0) {
-                        U = U + 0.5;
-                        rec_day--;
-                    }
+                while (rec_day != 0) {
+                    U = U + 0.5;
+                    rec_day--;
                 }
-            } else if (host_type == "Vaccinated") {
+            }
+            else if (host_type == "Vaccinated") {
                 U = Double.parseDouble(vaccinated.get("V_A2"));
-                for (Person p : PersonDirectory.getInstance().getPersonList()) {
-                    rec_day = p.getRecovery_day();
-                    while (rec_day != 0) {
-                        U = U + 0.7;
-                        rec_day--;
-                    }
+                while (rec_day != 0) {
+                    U = U + 0.7;
+                    rec_day--;
                 }
             }
         }
         else if (host_genotype == "B1") {
             if (host_type == "Naive") {
                 U = Double.parseDouble(naive.get("N_B1"));
-                for (Person p : PersonDirectory.getInstance().getPersonList()) {
-                    rec_day = p.getRecovery_day();
-                    while (rec_day != 0) {
-                        U = U + 0.2;
-                        rec_day--;
-                    }
+                while (rec_day != 0) {
+                    U = U + 0.2;
+                    rec_day--;
                 }
             }
             else if (host_type == "Recovered") {
                 U = Double.parseDouble(recovered.get("R_B1"));
-                for (Person p : PersonDirectory.getInstance().getPersonList()) {
-                    rec_day = p.getRecovery_day();
-                    while (rec_day != 0) {
-                        U = U + 0.5;
-                        rec_day--;
-                    }
+                while (rec_day != 0) {
+                    U = U + 0.5;
+                    rec_day--;
                 }
             }
             else if (host_type == "Vaccinated") {
                 U = Double.parseDouble(vaccinated.get("V_B1"));
-                for (Person p : PersonDirectory.getInstance().getPersonList()) {
-                    rec_day = p.getRecovery_day();
-                    while (rec_day != 0) {
-                        U = U + 0.7;
-                        rec_day--;
-                    }
+                while (rec_day != 0) {
+                    U = U + 0.7;
+                    rec_day--;
                 }
             }
         }
         else if (host_genotype == "B2") {
             if (host_type == "Naive") {
                 U = Double.parseDouble(naive.get("N_B2"));
-                for (Person p : PersonDirectory.getInstance().getPersonList()) {
-                    rec_day = p.getRecovery_day();
-                    while (rec_day != 0) {
-                        U = U + 0.2;
-                        rec_day--;
-                    }
+                while (rec_day != 0) {
+                    U = U + 0.2;
+                    rec_day--;
                 }
             }
             else if (host_type == "Recovered") {
                 U = Double.parseDouble(recovered.get("R_B2"));
-                for (Person p : PersonDirectory.getInstance().getPersonList()) {
-                    rec_day = p.getRecovery_day();
-                    while (rec_day != 0) {
-                        U = U + 0.5;
-                        rec_day--;
-                    }
+                while (rec_day != 0) {
+                    U = U + 0.5;
+                    rec_day--;
                 }
             }
             else if (host_type == "Vaccinated") {
                 U = Double.parseDouble(vaccinated.get("V_B2"));
-                for (Person p : PersonDirectory.getInstance().getPersonList()) {
-                    rec_day = p.getRecovery_day();
-                    while (rec_day != 0) {
-                        U = U + 0.7;
-                        rec_day--;
-                    }
+                while (rec_day != 0) {
+                    U = U + 0.7;
+                    rec_day--;
                 }
             }
-
         }
         return U;
     }

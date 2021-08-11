@@ -3,6 +3,7 @@ package Person;
 import Island.Island;
 import org.ini4j.Ini;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Hashtable;
@@ -29,6 +30,9 @@ public class Person extends Position {
     public double death_factor;
     public int recovery_day;
     public int mutation_count;
+    public Color mutationColor;
+    public boolean isVaccinated;
+
 
     public Person() throws IOException {
         super();
@@ -208,4 +212,20 @@ public class Person extends Position {
     public void setDead(boolean dead) {
         isDead = dead;
     }
+
+    public Color getMutationColor() {
+        return mutationColor;
     }
+
+    public void setMutationColor(Color mutationColor) {
+        this.mutationColor = mutationColor;
+    }
+
+    public boolean isVaccinated() {
+        return isVaccinated;
+    }
+
+    public void setVaccinated(boolean vaccinated) {
+        isVaccinated = vaccinated;
+    }
+}
