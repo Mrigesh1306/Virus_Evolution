@@ -156,6 +156,11 @@ public class Simulator extends JPanel implements Runnable {
 
                 }
 
+                //vaccination logic
+        if(presentDay>(numberOfDays/2))
+        {
+            //for()
+        }
         //break the paint() method
         System.out.println(presentDay);
         if(presentDay<numberOfDays) {
