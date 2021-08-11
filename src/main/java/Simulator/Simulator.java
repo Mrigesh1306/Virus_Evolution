@@ -174,6 +174,7 @@ public class Simulator extends JPanel implements Runnable {
                 int number=random.nextInt(currentNonPersonList.size());
                 Person p=currentNonPersonList.get(number);
                 p.setInfection_Status("Vaccinated");
+                p.setMutationColor(new Color(90, 255, 0));
                 p.setVaccinated(true);
 
 
