@@ -60,11 +60,11 @@ public class Simulator extends JPanel implements Runnable {
         super.paint(graphics);
         List<Person> people = PersonDirectory.getInstance().getPersonList();
         for (Person person : people) {
-            if(mutation.getMutationColor().containsKey(person.getMutation_count()))
-            {
-                graphics.setColor(mutation.fetchmutationColor(person.getMutation_count()));
-            }
-            else {
+//            if(mutation.getMutationColor().containsKey(person.getMutation_count()))
+//            {
+//                graphics.setColor(mutation.fetchmutationColor(person.getMutation_count()));
+//            }
+
                 if(person.isInfected())
                 {
                     graphics.setColor(person.getMutationColor());
@@ -87,10 +87,10 @@ public class Simulator extends JPanel implements Runnable {
                          }
                      }
                 }
-            }
+
 
             person.checkHealth();
-            graphics.fillOval(person.getX(), person.getY(), 5, 5);
+            graphics.fillOval(person.getX(), person.getY(), 10, 10);
         }
         try {
 
@@ -112,6 +112,7 @@ public class Simulator extends JPanel implements Runnable {
             //put new 12 mutation fitness values in hashtable
             pushValueToHashtable(newGT);
 
+            mutationPerson = getMutationPerson(map);
             //set this after adding all new values in fitness table
             mutationPerson.setMutation_count(fitnessHashTable.size());
 
@@ -125,6 +126,8 @@ public class Simulator extends JPanel implements Runnable {
             {
                 currentColor=mutation.getMutationColor().get(mutationPerson.getMutation_count());
             }
+
+            System.out.println("Mutation " + fitnessHashTable.size() +" : " +newGT +" is Variant : "+newVariantFlag );
         }
             //5.inner loop for spread
 
@@ -152,13 +155,14 @@ public class Simulator extends JPanel implements Runnable {
                         p.setInfection_Status("Recovered");
                         p.setMutationColor(new Color(177,177,177));
                     }
-                    if(p.isInfected())
-                        p.setRecovery_day(p.getRecovery_day()-1);
-
+                    if(p.isInfected()) {
+                        p.setRecovery_day(p.getRecovery_day() - 1);
+                    }
                     //check for person is dead or not
                     if(p.getRecovery_day()!=0 && !p.isInfected())
                     {
                         p.setDead(true);
+                        p.setMutationColor(new Color(0,0,0));
                     }
 
                 }
@@ -181,9 +185,10 @@ public class Simulator extends JPanel implements Runnable {
             }
         }
         //break the paint() method
-        System.out.println(presentDay);
+        //System.out.println(presentDay);
         if(presentDay<numberOfDays) {
             Thread.sleep(500);
+            System.out.println("Day : " + presentDay +" | Naive : "+PersonDirectory.getInstance().getNaiveCount() + " | Infected : "+PersonDirectory.getInstance().getInfectedCount()+" | Recovered : "+PersonDirectory.getInstance().getRecoveredCount()+" | Vaccinated : "+PersonDirectory.getInstance().getVaccinatedCount() +" | Dead : "+PersonDirectory.getInstance().getDeadCount());
             presentDay++;
             repaint();
         }else
@@ -301,6 +306,7 @@ public class Simulator extends JPanel implements Runnable {
         loadHashTable();
         UpdateMutationColorMap(fitnessHashTable.size());
         mutationPerson = getMutationPerson(map);
+        System.out.println("Mutation (Initial mutation) " + fitnessHashTable.size() +" : " +newGT +" is Variant : "+newVariantFlag );
 
 
     }
@@ -516,7 +522,7 @@ public class Simulator extends JPanel implements Runnable {
             U=Integer.parseInt(vaccinated.get(vaccinated.keySet().toArray()[i]));
             UFactor.add(U);
         }
-        System.out.println("U Factor"+ UFactor);
+        //System.out.println("U Factor"+ UFactor);
         //UFactor.add(Integer.parseInt(naive.get("N_A1")));
         return UFactor;
     }

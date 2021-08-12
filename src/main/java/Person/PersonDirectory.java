@@ -145,7 +145,7 @@ public class PersonDirectory {
         int currentNonInfectedCount = 0;
         for(Person p : PersonList)
         {
-            if(!p.isInfected() && (p.getInfection_Status().equals("Naive") || p.getInfection_Status().equals("Recovered")) && !p.isDead())
+            if(!p.isInfected() && (p.getInfection_Status().equals("Recovered")) && !p.isDead())
                 currentNonInfectedCount++;
         }
         return currentNonInfectedCount;
@@ -160,6 +160,39 @@ public class PersonDirectory {
             currentVaccinatedCount++;
         }
         return currentVaccinatedCount;
+
+    }
+
+    public int getNaiveCount(){
+        int currentVaccinatedCount = 0;
+        for(Person p : PersonList)
+        {
+            if(p.getInfection_Status().equals("Naive") && !p.isDead())
+                currentVaccinatedCount++;
+        }
+        return currentVaccinatedCount;
+
+    }
+
+    public int getInfectedCount(){
+        int currentInfectedCount = 0;
+        for(Person p : PersonList)
+        {
+            if(p.isInfected() && !p.isDead())
+                currentInfectedCount++;
+        }
+        return currentInfectedCount;
+
+    }
+
+    public int getDeadCount(){
+        int currentDeadCount = 0;
+        for(Person p : PersonList)
+        {
+            if(p.isDead())
+                currentDeadCount++;
+        }
+        return currentDeadCount;
 
     }
 }

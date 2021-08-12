@@ -79,7 +79,7 @@ public class Mutation {
             genotypefitnessValue += gene_fitness_value;
             j++;
         }
-        System.out.println("Genotype " + genotype + " Value " + genotypefitnessValue);
+       // System.out.println("Genotype " + genotype + " Value " + genotypefitnessValue);
         return genotypefitnessValue;
     }
 
@@ -124,10 +124,10 @@ public class Mutation {
         if(currentfitnessValue > variantThreshold)
         {
             //insert into variant directory if mutation is variant
-          //  insertIntoMutationList(fitnessHashTable.size()+1);
+            insertIntoMutationList(fitnessHashTable.size());
         }
-        System.out.println("currentfitnessValue "+currentfitnessValue);
-        System.out.println("variantThreshold "+variantThreshold);
+       // System.out.println("currentfitnessValue "+currentfitnessValue);
+        // System.out.println("variantThreshold "+variantThreshold);
         return currentfitnessValue > variantThreshold;
     }
 
