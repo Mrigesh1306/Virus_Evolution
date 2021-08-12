@@ -126,8 +126,8 @@ public class Mutation {
             //insert into variant directory if mutation is variant
             insertIntoMutationList(fitnessHashTable.size());
         }
-       // System.out.println("currentfitnessValue "+currentfitnessValue);
-        // System.out.println("variantThreshold "+variantThreshold);
+       System.out.println("currentfitnessValue "+currentfitnessValue);
+        System.out.println("variantThreshold "+variantThreshold);
         return currentfitnessValue > variantThreshold;
     }
 

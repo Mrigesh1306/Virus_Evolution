@@ -36,7 +36,7 @@ public class Simulator extends JPanel implements Runnable {
     int MaxMutation=Integer.parseInt(map.get("mutation"));
     float vaccineRate=Float.parseFloat(map.get("vaccination_rate"));
     int recoveryDays = Integer.parseInt(map.get("recovery_days"));
-    int dailyVaccination = (int)(vaccineRate*numberOfDays)/humanPopulation ;
+    int dailyVaccination = (int)(vaccineRate*humanPopulation);
 
     int presentDay =1;
     int eachSpreadDay=0;
@@ -51,7 +51,7 @@ public class Simulator extends JPanel implements Runnable {
     //constructor
     public Simulator() throws IOException {
         super();
-        this.setBackground(new Color(224, 195, 145));
+        this.setBackground(new Color(245, 214, 167));
     }
 
     @Override
@@ -150,15 +150,23 @@ public class Simulator extends JPanel implements Runnable {
                 for(Person p : PersonDirectory.getInstance().getPersonList()){
                     if(p.getRecovery_day()==0 && p.isInfected())
                     {
-                        p.setInfected(false);
-                        p.setInfection_Status("Recovered");
-                        p.setMutationColor(new Color(177,177,177));
+                        if(p.isVaccinated())
+                        {
+                            p.setInfected(false);
+                            p.setInfection_Status("Vaccinated");
+                            p.setMutationColor(new Color(90, 255, 0));
+                        }
+                        else {
+                            p.setInfected(false);
+                            p.setInfection_Status("Recovered");
+                            p.setMutationColor(new Color(177, 177, 177));
+                        }
                     }
                     if(p.isInfected()) {
                         p.setRecovery_day(p.getRecovery_day() - 1);
                     }
                     //check for person is dead or not
-                    if(p.getRecovery_day()!=0 && !p.isInfected())
+                    if(p.infection_count>=25)
                     {
                         p.setDead(true);
                         p.setMutationColor(new Color(0,0,0));
@@ -186,7 +194,7 @@ public class Simulator extends JPanel implements Runnable {
         //break the paint() method
         //System.out.println(presentDay);
         if(presentDay<numberOfDays) {
-            Thread.sleep(500);
+            Thread.sleep(200);
             System.out.println("Day : " + presentDay +" | Naive : "+PersonDirectory.getInstance().getNaiveCount() + " | Infected : "+PersonDirectory.getInstance().getInfectedCount()+" | Recovered : "+PersonDirectory.getInstance().getRecoveredCount()+" | Vaccinated : "+PersonDirectory.getInstance().getVaccinatedCount() +" | Dead : "+PersonDirectory.getInstance().getDeadCount());
             presentDay++;
             repaint();
