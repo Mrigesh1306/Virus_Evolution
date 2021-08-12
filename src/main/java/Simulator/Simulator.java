@@ -35,7 +35,7 @@ public class Simulator extends JPanel implements Runnable {
     int spreadDays = Integer.parseInt(map.get("spread_days"));
     int MaxMutation=Integer.parseInt(map.get("mutation"));
     float vaccineRate=Float.parseFloat(map.get("vaccination_rate"));
-
+    int recoveryDays = Integer.parseInt(map.get("recovery_days"));
     int dailyVaccination = (int)(vaccineRate*numberOfDays)/humanPopulation ;
 
     int presentDay =1;
@@ -135,20 +135,19 @@ public class Simulator extends JPanel implements Runnable {
                 List<Person> currNonInfectedList= PersonDirectory.getInstance().getCurrentNonInfectedList();
                 for(int k=0;k<(spreadCountPercentage * humanPopulation/100);k++)
                 {
+                    Random r=new Random();
                     //update noninfected list
                     currNonInfectedList= PersonDirectory.getInstance().getCurrentNonInfectedList();
-                    Random r=new Random();
                     Person currPerson=currNonInfectedList.get(r.nextInt(currNonInfectedList.size()));
                     currPerson.setInfection_count(currPerson.getInfection_count()+1);
                     currPerson.setMutation_count(mutationPerson.getMutation_count());
-                    currPerson.setRecovery_day(Integer.parseInt(map.get("recovery_days")));
+                    currPerson.setRecovery_day(recoveryDays);
                     currPerson.setInfected(true);
                     currPerson.setMutationColor(currentColor);
                 }
 
                 //update all person's properties including recovery_days and status.
                 for(Person p : PersonDirectory.getInstance().getPersonList()){
-
                     if(p.getRecovery_day()==0 && p.isInfected())
                     {
                         p.setInfected(false);
@@ -226,12 +225,15 @@ public class Simulator extends JPanel implements Runnable {
     }
 
     @NotNull
-    public static Person getMutationPerson(Map<String, String> map) {
+    public Person getMutationPerson(Map<String, String> map) {
         //1. random person selection - infected
         List<Person> currInfectedList= PersonDirectory.getInstance().getCurrentInfectedList(fitnessHashTable.size());
         Random random=new Random();
-        int randomPerson=random.nextInt(currInfectedList.size());
-        Person mutationPerson=currInfectedList.get(randomPerson);
+        if(currInfectedList.size()==0)
+            mutationPerson=PersonDirectory.getInstance().getPersonList().get(random.nextInt(PersonDirectory.getInstance().getPersonList().size()));
+        else
+         mutationPerson=currInfectedList.get(random.nextInt(currInfectedList.size()));
+        //Person mutationPerson=currInfectedList.get(randomPerson);
         //change properties of person.
         //mutaion count hashtable value +1
         mutationPerson.setMutation_count(fitnessHashTable.size()+1);
@@ -240,7 +242,7 @@ public class Simulator extends JPanel implements Runnable {
         mutationPerson.setInfected(true);
         //mutationPerson.setInfection_Status("Infected");
         //recover days
-        mutationPerson.setRecovery_day(Integer.parseInt(map.get("recover_days")));
+        mutationPerson.setRecovery_day(recoveryDays);
         //infection count+1
         mutationPerson.setInfection_count(mutationPerson.getInfection_count()+1);
         return mutationPerson;

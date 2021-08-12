@@ -80,11 +80,11 @@ public class PersonDirectory {
                 currentInfectedList.add(p);
         }
 
-        if(currentInfectedList.size()==0)
-        {
-            Random r=new Random();
-            currentInfectedList.add(PersonList.get(r.nextInt(PersonList.size())));
-        }
+//        if(currentInfectedList.size()==0)
+//        {
+//            Random r=new Random();
+//            currentInfectedList.add(PersonList.get(r.nextInt(PersonList.size())));
+//        }
         return currentInfectedList;
     }
 
