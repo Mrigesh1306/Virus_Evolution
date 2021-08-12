@@ -105,7 +105,16 @@ public class Mutation {
 
     //Fetch the color based on mutation count
     public Color fetchmutationColor(int mutationCount) {
+        System.out.println("mutationColor "+mutationColor);
         return mutationColor.get(mutationCount);
+    }
+
+    public Color getCurrentVariantColor(){
+        Color c=null;
+        for(int i = 0;i <mutationColor.size();i++){
+            c= fetchmutationColor(i);
+        }
+        return c;
     }
 
     //    Check if the mutation is variant
@@ -114,7 +123,7 @@ public class Mutation {
         Map<String, String> map = ini.get("default");
         double dominant_factor = Double.parseDouble(map.get("dominant_factor"));
 
-        maxCurrentFitness = calculateGenotypeFitness(genotype, 100);
+        maxCurrentFitness = calculateGenotypeFitness(genotype, 96);
 
         double variantThreshold = maxPreviousFitness + (maxCurrentFitness - maxPreviousFitness) * dominant_factor;
 

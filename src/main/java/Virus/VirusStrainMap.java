@@ -1,5 +1,6 @@
 package Virus;
 
+import Mutation.Mutation;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -37,13 +38,14 @@ public class VirusStrainMap extends JPanel {
 
 
     public VirusStrainMap() throws IOException {
-
+         Mutation m = new Mutation();
         XYDataset dataset = createDataset(series);
         XYDataset dataset2 = createDataset(series2);
         XYDataset dataset3 = createDataset(series3);
-        ChartPanel chart = createChart(dataset, Color.RED);
-        ChartPanel chart2 = createChart(dataset2, Color.GREEN);
-        ChartPanel chart3 = createChart(dataset3, Color.BLACK);
+        System.out.println("m.getCurrentVariantColor() "+m.getCurrentVariantColor());
+        ChartPanel chart = createChart(dataset, Color.blue);
+        ChartPanel chart2 = createChart(dataset2, Color.GRAY);
+        ChartPanel chart3 = createChart(dataset3, Color.GREEN);
 
         //diving the graphs and label in two panel for better presenattion
         JPanel mainPanel = new JPanel();

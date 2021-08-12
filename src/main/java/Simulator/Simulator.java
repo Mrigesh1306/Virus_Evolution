@@ -342,6 +342,7 @@ public class Simulator extends JPanel implements Runnable {
         this.vmap=vmap;
     }
 
+
     //Demo Code *Needs to be updated*
     class MyTimerTask extends TimerTask {
         @Override
@@ -402,21 +403,21 @@ public class Simulator extends JPanel implements Runnable {
             if (host_type == "Naive") {
                 U = Double.parseDouble(naive.get("N_A1"));
                 while (rec_day != 0) {
-                    U = U + 0.2;
+                    U = U + 0.4;
                     rec_day--;
                 }
             }
             else if (host_type == "Recovered") {
                 U = Double.parseDouble(recovered.get("R_A1"));
                 while (rec_day != 0) {
-                    U = U + 0.5;
+                    U = U + 0.7;
                     rec_day--;
                 }
             }
             else if (host_type == "Vaccinated") {
                 U = Double.parseDouble(vaccinated.get("V_A1"));
                 while (rec_day != 0) {
-                    U = U + 0.7;
+                    U = U + 0.9;
                     rec_day--;
                 }
 
@@ -426,21 +427,21 @@ public class Simulator extends JPanel implements Runnable {
             if (host_type == "Naive") {
                 U = Double.parseDouble(naive.get("N_A2"));
                 while (rec_day != 0) {
-                    U = U + 0.2;
+                    U = U + 0.4;
                     rec_day--;
                 }
             }
             else if (host_type == "Recovered") {
                 U = Double.parseDouble(recovered.get("R_A2"));
                 while (rec_day != 0) {
-                    U = U + 0.5;
+                    U = U + 0.7;
                     rec_day--;
                 }
             }
             else if (host_type == "Vaccinated") {
                 U = Double.parseDouble(vaccinated.get("V_A2"));
                 while (rec_day != 0) {
-                    U = U + 0.7;
+                    U = U + 0.9;
                     rec_day--;
                 }
             }
@@ -449,21 +450,21 @@ public class Simulator extends JPanel implements Runnable {
             if (host_type == "Naive") {
                 U = Double.parseDouble(naive.get("N_B1"));
                 while (rec_day != 0) {
-                    U = U + 0.2;
+                    U = U + 0.4;
                     rec_day--;
                 }
             }
             else if (host_type == "Recovered") {
                 U = Double.parseDouble(recovered.get("R_B1"));
                 while (rec_day != 0) {
-                    U = U + 0.5;
+                    U = U + 0.7;
                     rec_day--;
                 }
             }
             else if (host_type == "Vaccinated") {
                 U = Double.parseDouble(vaccinated.get("V_B1"));
                 while (rec_day != 0) {
-                    U = U + 0.7;
+                    U = U + 0.9;
                     rec_day--;
                 }
             }
@@ -472,21 +473,21 @@ public class Simulator extends JPanel implements Runnable {
             if (host_type == "Naive") {
                 U = Double.parseDouble(naive.get("N_B2"));
                 while (rec_day != 0) {
-                    U = U + 0.2;
+                    U = U + 0.4;
                     rec_day--;
                 }
             }
             else if (host_type == "Recovered") {
                 U = Double.parseDouble(recovered.get("R_B2"));
                 while (rec_day != 0) {
-                    U = U + 0.5;
+                    U = U + 0.7;
                     rec_day--;
                 }
             }
             else if (host_type == "Vaccinated") {
                 U = Double.parseDouble(vaccinated.get("V_B2"));
                 while (rec_day != 0) {
-                    U = U + 0.7;
+                    U = U + 0.9;
                     rec_day--;
                 }
             }
