@@ -5,11 +5,18 @@
 
 <h1>
 <img align="left" src="https://www.paho.org/sites/default/files/styles/flexslider_full/public/2021-05/covid-19-variants.jpg?h=3634282f&itok=LPOrSDpj" width=1000 height=400><br><br><br>
-</h1>
+</h1><br>
 <br><br><br>
 
-<br>This project is built to demonstrate Virus Evolution Simulation of variants of a positive-sense single-stranded RNA virus ( SARS-CoV-2 ). This project is part of Course INFO6205 - Program Structures and Algorithms for Summer 2021.
-Detailed report about project and the simulation can be found here (link to report).
+
+ 
+<h5>  
+       
+       
+This project is built to demonstrate Virus Evolution Simulation of variants of a positive-sense single-stranded RNA virus ( SARS-CoV-2 ). This project is part of Course INFO6205 - Program Structures and Algorithms for Summer 2021.
+Detailed report about project and the simulation can be found here (link to report)
+</h5>
+
  
 #
 <p align="center">
