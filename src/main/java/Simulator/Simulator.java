@@ -11,9 +11,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
 import java.util.List;
 import java.util.Timer;
+import java.util.*;
 
 public class Simulator extends JPanel implements Runnable {
 
@@ -304,9 +304,9 @@ public class Simulator extends JPanel implements Runnable {
         @Override
         public void run() {
             //adding the updated data to series in Charts class to update the charts
-            VirusStrainMap.getSeries().add(presentDay / 10, PersonDirectory.getInstance().getInfectedCount(fitnessHashTable.size()));
-            VirusStrainMap.getSeries2().add(presentDay / 10, PersonDirectory.getInstance().getRecoveredCount());
-            VirusStrainMap.getSeries3().add(presentDay / 10, PersonDirectory.getInstance().getVaccinatedCount());
+            VirusStrainMap.getInfected().add(presentDay , PersonDirectory.getInstance().getInfectedCount(fitnessHashTable.size()));
+            VirusStrainMap.getRecovered().add(presentDay, PersonDirectory.getInstance().getRecoveredCount());
+            VirusStrainMap.getVaccinated().add(presentDay, PersonDirectory.getInstance().getVaccinatedCount());
 
             //updating the map in Charts class to update the label data along with graph
             VirusStrainMap.data.put("Total Population: ", Integer.parseInt(map.get("human_population")));
@@ -314,7 +314,7 @@ public class Simulator extends JPanel implements Runnable {
             VirusStrainMap.data.put("Total Recovered Cases: ", PersonDirectory.getInstance().getRecoveredCount());
             VirusStrainMap.data.put("Total Vaccinated Patients: ", PersonDirectory.getInstance().getVaccinatedCount());
 
-            VirusStrainMap.updateLbl();
+            VirusStrainMap.updText();
         }
     }
 

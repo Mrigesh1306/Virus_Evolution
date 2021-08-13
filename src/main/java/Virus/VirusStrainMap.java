@@ -25,9 +25,9 @@ public class VirusStrainMap extends JPanel {
     public JFrame frame;
 
     //creating a 3 series for holding data to draw charts
-    static XYSeries series = new XYSeries("Infected People");
-    static XYSeries series2 = new XYSeries("Recovered People");
-    static XYSeries series3 = new XYSeries("Vaccinated People");
+    static XYSeries infected = new XYSeries("Infected People");
+    static XYSeries recovered = new XYSeries("Recovered People");
+    static XYSeries vaccinated = new XYSeries("Vaccinated People");
 
     //creating label to print the numbers
     static JLabel lbl = new JLabel();
@@ -35,22 +35,12 @@ public class VirusStrainMap extends JPanel {
     //map to continuously update the label data
     public static Map<String, Integer> data = new HashMap();
 
-    public Color getInfectedColor() {
-        return infectedColor;
-    }
-
-    public void setInfectedColor(Color infectedColor) {
-        this.infectedColor = infectedColor;
-    }
-
-    public Color infectedColor;
-
-    static XYDataset dataset = createDataset(series);
-    XYDataset dataset2 = createDataset(series2);
-    XYDataset dataset3 = createDataset(series3);
-    ChartPanel chart = createChart(dataset, Color.RED);
-    ChartPanel chart2 = createChart(dataset2, Color.GRAY);
-    ChartPanel chart3 = createChart(dataset3, Color.GREEN);
+    XYDataset infDataSet = createDataset(infected);
+    XYDataset recDataSet = createDataset(recovered);
+    XYDataset vacDataSet = createDataset(vaccinated);
+    ChartPanel infChart = createChart(infDataSet, Color.RED);
+    ChartPanel recChart = createChart(recDataSet, Color.GRAY);
+    ChartPanel vacChart = createChart(vacDataSet, Color.GREEN);
 
     public VirusStrainMap(Simulator s) throws IOException {
 
@@ -61,19 +51,19 @@ public class VirusStrainMap extends JPanel {
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
 
         JPanel p1 = new JPanel();
-        chart.setBackground(Color.white);
-        p1.add(chart);
+        infChart.setBackground(Color.white);
+        p1.add(infChart);
         JPanel p2 = new JPanel();
-        chart2.setBackground(Color.white);
-        p2.add(chart2);
+        recChart.setBackground(Color.white);
+        p2.add(recChart);
         JPanel p3 = new JPanel();
-        chart3.setBackground(Color.white);
-        p3.add(chart3);
+        vacChart.setBackground(Color.white);
+        p3.add(vacChart);
 
         //setting the label font, size and border
         JPanel p4 = new JPanel();
         lbl.setFont(new Font(lbl.getFont().getName(), Font.PLAIN, 18));
-        p4.setSize(300, 250);
+        p4.setSize(400, 250);
         p4.setBorder(BorderFactory.createLineBorder(Color.black));
         p4.add(lbl);
 
@@ -87,16 +77,16 @@ public class VirusStrainMap extends JPanel {
 
     }
 
-    public static XYSeries getSeries() {
-        return series;
+    public static XYSeries getInfected() {
+        return infected;
     }
 
-    public static XYSeries getSeries2() {
-        return series2;
+    public static XYSeries getRecovered() {
+        return recovered;
     }
 
-    public static XYSeries getSeries3() {
-        return series3;
+    public static XYSeries getVaccinated() {
+        return vaccinated;
     }
 
     //creating DataSet from series
@@ -107,7 +97,7 @@ public class VirusStrainMap extends JPanel {
     }
 
     //method to update the label data by reading map values
-    public static void updateLbl() {
+    public static void updText() {
         String res = "<html>";
         for (String name : data.keySet()) {
             String key = name;
@@ -116,25 +106,6 @@ public class VirusStrainMap extends JPanel {
         }
         res += "</html>";
         lbl.setText(res);
-    }
-
-    public static void changeColor(Color color) {
-        JFreeChart chart = ChartFactory.createXYLineChart(
-                "",
-                "Days",
-                "Number of people",
-                dataset,
-                PlotOrientation.VERTICAL,
-                true,
-                true,
-                false
-        );
-
-        XYPlot plot = chart.getXYPlot();
-        System.out.println("color NOW " + color);
-        XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
-        renderer.setSeriesPaint(0, color);
-        renderer.setSeriesStroke(0, new BasicStroke(1.0f));
     }
 
     //drawing the charts on the panel using this method
@@ -175,7 +146,7 @@ public class VirusStrainMap extends JPanel {
         //setting dimensions for the chart
         return new ChartPanel(chart) {
             public Dimension getPreferredSize() {
-                return new Dimension(250, 250);
+                return new Dimension(270, 270);
             }
         };
     }

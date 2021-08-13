@@ -34,7 +34,7 @@ public class PersonDirectory {
     }
 
     public PersonDirectory() throws IOException {
-        Island island = new Island(350, 350);
+        Island island = new Island(300, 300);
         for (int i = 0; i < Integer.parseInt(map.get("human_population")); i += 4) {
             Random random = new Random();
             int x = (int) (100 * random.nextGaussian() + island.getCenterX());

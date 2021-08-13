@@ -46,6 +46,7 @@ public class main {
         frame.setSize(1200, 800);
         frame.setResizable(false);
         frame.setLocation(50, 50);
+        frame.setBackground(Color.WHITE);
 
         //starting the thread
         panelThread.start();
