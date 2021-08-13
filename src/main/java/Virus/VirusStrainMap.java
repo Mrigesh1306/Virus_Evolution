@@ -1,6 +1,6 @@
 package Virus;
 
-import Mutation.Mutation;
+import Simulator.Simulator;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-
 public class VirusStrainMap extends JPanel {
 
     public JFrame frame;
@@ -36,16 +35,24 @@ public class VirusStrainMap extends JPanel {
     //map to continuously update the label data
     public static Map<String, Integer> data = new HashMap();
 
+    public Color getInfectedColor() {
+        return infectedColor;
+    }
 
-    public VirusStrainMap() throws IOException {
-         Mutation m = new Mutation();
-        XYDataset dataset = createDataset(series);
-        XYDataset dataset2 = createDataset(series2);
-        XYDataset dataset3 = createDataset(series3);
-        System.out.println("m.getCurrentVariantColor() "+m.getCurrentVariantColor());
-        ChartPanel chart = createChart(dataset, Color.blue);
-        ChartPanel chart2 = createChart(dataset2, Color.GRAY);
-        ChartPanel chart3 = createChart(dataset3, Color.GREEN);
+    public void setInfectedColor(Color infectedColor) {
+        this.infectedColor = infectedColor;
+    }
+
+    public Color infectedColor;
+
+    static XYDataset dataset = createDataset(series);
+    XYDataset dataset2 = createDataset(series2);
+    XYDataset dataset3 = createDataset(series3);
+    ChartPanel chart = createChart(dataset, Color.RED);
+    ChartPanel chart2 = createChart(dataset2, Color.GRAY);
+    ChartPanel chart3 = createChart(dataset3, Color.GREEN);
+
+    public VirusStrainMap(Simulator s) throws IOException {
 
         //diving the graphs and label in two panel for better presenattion
         JPanel mainPanel = new JPanel();
@@ -66,7 +73,7 @@ public class VirusStrainMap extends JPanel {
         //setting the label font, size and border
         JPanel p4 = new JPanel();
         lbl.setFont(new Font(lbl.getFont().getName(), Font.PLAIN, 18));
-        p4.setSize(300,250);
+        p4.setSize(300, 250);
         p4.setBorder(BorderFactory.createLineBorder(Color.black));
         p4.add(lbl);
 
@@ -80,39 +87,58 @@ public class VirusStrainMap extends JPanel {
 
     }
 
-    public static XYSeries getSeries(){
+    public static XYSeries getSeries() {
         return series;
     }
 
-    public static XYSeries getSeries2(){
+    public static XYSeries getSeries2() {
         return series2;
     }
 
-    public static XYSeries getSeries3(){
+    public static XYSeries getSeries3() {
         return series3;
     }
 
     //creating DataSet from series
-    private XYDataset createDataset(XYSeries s) {
+    private static XYDataset createDataset(XYSeries s) {
         XYSeriesCollection dataset = new XYSeriesCollection();
         dataset.addSeries(s);
         return dataset;
     }
 
     //method to update the label data by reading map values
-    public static void updateLbl(){
+    public static void updateLbl() {
         String res = "<html>";
-        for (String name: data.keySet()) {
+        for (String name : data.keySet()) {
             String key = name;
             String value = data.get(name).toString();
-            res+=key + " " + value + "<br/>";
+            res += key + " " + value + "<br/>";
         }
-        res+="</html>";
+        res += "</html>";
         lbl.setText(res);
     }
 
+    public static void changeColor(Color color) {
+        JFreeChart chart = ChartFactory.createXYLineChart(
+                "",
+                "Days",
+                "Number of people",
+                dataset,
+                PlotOrientation.VERTICAL,
+                true,
+                true,
+                false
+        );
+
+        XYPlot plot = chart.getXYPlot();
+        System.out.println("color NOW " + color);
+        XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+        renderer.setSeriesPaint(0, color);
+        renderer.setSeriesStroke(0, new BasicStroke(1.0f));
+    }
+
     //drawing the charts on the panel using this method
-    private ChartPanel createChart(XYDataset dataset, Color c) {
+    private static ChartPanel createChart(XYDataset dataset, Color c) {
         JFreeChart chart = ChartFactory.createXYLineChart(
                 "",
                 "Days",

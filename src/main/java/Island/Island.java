@@ -6,11 +6,10 @@
 package Island;
 
 /**
- *
  * @author mrigesh
  */
 public class Island {
-    
+
     private int centerX;
     private int centerY;
 
@@ -35,5 +34,5 @@ public class Island {
     public void setCenterY(int centerY) {
         this.centerY = centerY;
     }
-    
+
 }

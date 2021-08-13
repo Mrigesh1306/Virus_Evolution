@@ -7,8 +7,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
+
 /**
- *
  * @author mrigesh
  */
 public class Mutation {
@@ -61,32 +61,27 @@ public class Mutation {
     //Inserts every mutation into this HashMap and assigns random color
     public static void insertIntoMutationList(int mutationCount) {
         Random r = new Random();
-        while(true)
-        {
-            int rc=r.nextInt(255);
-            int g=r.nextInt(255);
-            int b=r.nextInt(255);
-            if(!(rc==255 && g==255 && b==255 || rc==90 && g==255 && b==0 || rc==177 && g==177 && b==177 || rc==0 && g==0 && b==0 ))
-            {
-                mutationColor.put(mutationCount,new Color(rc,g,b) );
-               break;
+        while (true) {
+            int rc = r.nextInt(255);
+            int g = r.nextInt(255);
+            int b = r.nextInt(255);
+            if (!(rc == 255 && g == 255 && b == 255 || rc == 90 && g == 255 && b == 0 || rc == 177 && g == 177 && b == 177 || rc == 0 && g == 0 && b == 0)) {
+                mutationColor.put(mutationCount, new Color(rc, g, b));
+                break;
             }
-
-
         }
-
     }
 
     //Fetch the color based on mutation count
     public Color fetchmutationColor(int mutationCount) {
-        System.out.println("mutationColor "+mutationColor);
+        System.out.println("mutationColor " + mutationColor);
         return mutationColor.get(mutationCount);
     }
 
-    public Color getCurrentVariantColor(){
-        Color c=null;
-        for(int i = 0;i <mutationColor.size();i++){
-            c= fetchmutationColor(i);
+    public Color getCurrentVariantColor() {
+        Color c = null;
+        for (int i = 0; i < mutationColor.size(); i++) {
+            c = fetchmutationColor(i);
         }
         return c;
     }
@@ -104,8 +99,7 @@ public class Mutation {
         maxPreviousFitness = maxCurrentFitness;
         previousHostFitness = currentfitnessValue;
 
-        if(currentfitnessValue > variantThreshold)
-        {
+        if (currentfitnessValue > variantThreshold) {
             //insert into variant directory if mutation is variant
             insertIntoMutationList(fitnessHashTable.size());
         }

@@ -8,8 +8,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Random;
+
 /**
- *
  * @author sayali mahajan
  */
 public class Person extends Position {
@@ -49,7 +49,7 @@ public class Person extends Position {
             randomWalk = new RandomWalk((int) targetX, (int) targetY);
         }
         if ((getY() - 400) * (randomWalk.getxAxis() - 400) < 0) {
-            if (randomWalk.getyAxis() >=400)
+            if (randomWalk.getyAxis() >= 400)
                 island = new Island(500, 500);
             else
                 island = new Island(200, 200);

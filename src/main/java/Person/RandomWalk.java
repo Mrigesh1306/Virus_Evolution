@@ -1,13 +1,13 @@
 package Person;
+
 /**
- *
  * @author sayali mahajan
  */
 public class RandomWalk {
 
     private int xAxis;
     private int yAxis;
-    private boolean rePositioned =false;
+    private boolean rePositioned = false;
 
     public RandomWalk(int xAxis, int yAxis) {
         this.xAxis = xAxis;
