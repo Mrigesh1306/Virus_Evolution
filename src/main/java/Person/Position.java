@@ -1,5 +1,8 @@
 package Person;
-
+/**
+ *
+ * @author sayali mahajan
+ */
 public class Position {
 
     private int x;

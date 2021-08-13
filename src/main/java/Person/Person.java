@@ -6,10 +6,12 @@ import org.ini4j.Ini;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.Hashtable;
-import java.util.List;
 import java.util.Map;
-
+import java.util.Random;
+/**
+ *
+ * @author sayali mahajan
+ */
 public class Person extends Position {
 
     private RandomWalk randomWalk;
@@ -17,7 +19,7 @@ public class Person extends Position {
     Map<String, String> map = ini.get("default");
     //This shows current health of residents
     Map<String, String> host_type = ini.get("host_type");
-
+    private static final Random randomGen = new Random();
     private double xAxis;
     private double yAxis;
     private Island island;
@@ -42,69 +44,64 @@ public class Person extends Position {
 
         // Random random=new Random();
         if (randomWalk == null || randomWalk.isRePositioned()) {
-            double targetX = MathUtil.stdGaussian(100, xAxis);
-            double targetY = MathUtil.stdGaussian(100, yAxis);
+            double targetX = stdGaussian(100, xAxis);
+            double targetY = stdGaussian(100, yAxis);
             randomWalk = new RandomWalk((int) targetX, (int) targetY);
         }
         if ((getY() - 400) * (randomWalk.getxAxis() - 400) < 0) {
-            if (randomWalk.getyAxis() < 400) {
-                island = new Island(200, 200);
-            } else {
+            if (randomWalk.getyAxis() >=400)
                 island = new Island(500, 500);
-            }
+            else
+                island = new Island(200, 200);
         }
-        int dX = randomWalk.getxAxis() - getX();
-        int dY = randomWalk.getyAxis() - getY();
-        double length = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
+        int differX = randomWalk.getxAxis() - getX();
+        int differY = randomWalk.getyAxis() - getY();
+        double length = Math.sqrt(Math.pow(differX, 2) + Math.pow(differY, 2));
 
         if (length < 1) {
             randomWalk.setRePositioned(true);
             return;
         }
 
-        int udX = (int) (dX / length);
-        if (udX == 0 && dX != 0) {
-            if (dX > 0) {
-                udX = 1;
-            } else {
-                udX = -1;
-            }
+        int updatedDifferX = (int) (differX / length);
+        if (updatedDifferX == 0 && differX != 0) {
+            if (differX <= 0)
+                updatedDifferX = -1;
+            else
+                updatedDifferX = 1;
         }
 
-        int udY = (int) (dY / length);
-        if (udY == 0 && dY != 0) {
-            if (dY > 0) {
-                udY = 1;
-            } else {
-                udY = -1;
-            }
+        int updatedDifferY = (int) (differY / length);
+        if (updatedDifferY == 0 && differY != 0) {
+            if (differY <= 0)
+                updatedDifferY = -1;
+            else
+                updatedDifferY = 1;
         }
         if (getX() > Integer.parseInt(map.get("island_width")) || getX() < 0) {
             randomWalk = null;
-            if (udX > 0) {
-                udX = -udX;
-            }
+            if (updatedDifferX > 0)
+                updatedDifferX = -updatedDifferX;
         }
         if (getY() > Integer.parseInt(map.get("island_height")) || getY() < 0) {
             randomWalk = null;
-            if (udY > 0) {
-                udY = -udY;
-            }
+            if (updatedDifferY > 0)
+                updatedDifferY = -updatedDifferY;
         }
-        rePosition(udX, udY);
+        rePosition(updatedDifferX, updatedDifferY);
     }
 
     public void checkHealth() {
-        double targetX = MathUtil.stdGaussian(100, xAxis);
-        double targetY = MathUtil.stdGaussian(100, yAxis);
+        double targetX = stdGaussian(100, xAxis);
+        double targetY = stdGaussian(100, yAxis);
         randomWalk = new RandomWalk((int) targetX, (int) targetY);
         doRandomMove();
     }
 
     public Person(int xAxis, int yAxis, Island island, String human_genome) throws IOException {
         super(xAxis, yAxis);
-        this.xAxis = MathUtil.stdGaussian(100, xAxis);
-        this.yAxis = MathUtil.stdGaussian(100, yAxis);
+        this.xAxis = stdGaussian(100, xAxis);
+        this.yAxis = stdGaussian(100, yAxis);
         this.human_genome = human_genome;
         this.island = island;
     }
@@ -227,5 +224,10 @@ public class Person extends Position {
 
     public void setVaccinated(boolean vaccinated) {
         isVaccinated = vaccinated;
+    }
+
+    public static double stdGaussian(double sigma, double u) {
+        double X = randomGen.nextGaussian();
+        return sigma * X + u;
     }
 }

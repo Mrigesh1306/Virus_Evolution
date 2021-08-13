@@ -8,10 +8,6 @@ import java.util.Random;
 public class Virions {
     List<ArrayList<String>> virionFam = new ArrayList<ArrayList<String>>();
     static ArrayList<String> v1 = new ArrayList<String>();
-    //static String[] cat1 = new String[10];
-    //static String[] cat2 = new String[10];
-    //static String[] cat3 = new String[10];
-    //static String[] cat4 = new String[10];
     static VirusGenome vg = new VirusGenome();
 
     public static void VirionFamily() {

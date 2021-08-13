@@ -9,7 +9,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.*;
-
+/**
+ *
+ * @author sayali mahajan
+ */
 public class PersonDirectory {
 
     private static PersonDirectory personDirectory;
@@ -31,7 +34,6 @@ public class PersonDirectory {
 
     public PersonDirectory() throws IOException {
         Island island = new Island(350, 350);
-       // personDirectory=new PersonDirectory();
         for (int i = 0; i < Integer.parseInt(map.get("human_population")); i+=4) {
             Random random = new Random();
             int x = (int) (100 * random.nextGaussian() + island.getCenterX());
@@ -62,7 +64,7 @@ public class PersonDirectory {
     }
 
     public List<Person> getInfectedList(){
-    List<Person> infectedList=new ArrayList<Person>();
+    List<Person> infectedList=new ArrayList<>();
     for(Person p : PersonList)
         {
             if(p.isInfected() && !p.isDead())
@@ -73,7 +75,7 @@ public class PersonDirectory {
 
     public List<Person> getCurrentInfectedList(int currMutationCount)
     {
-        List<Person> currentInfectedList=new ArrayList<Person>();
+        List<Person> currentInfectedList=new ArrayList<>();
         for(Person p : PersonList)
         {
             if(p.isInfected() && p.getMutation_count()== currMutationCount && !p.isDead())
@@ -90,7 +92,7 @@ public class PersonDirectory {
 
     public List<Person> getCurrentNonInfectedList()
     {
-        List<Person> currentNonInfectedList=new ArrayList<Person>();
+        List<Person> currentNonInfectedList=new ArrayList<>();
         for(Person p : PersonList)
         {
             if(!p.isInfected() && (p.getInfection_Status().equals("Naive") || p.getInfection_Status().equals("Recovered") || p.getInfection_Status().equals("Vaccinated")) && !p.isDead())
@@ -101,7 +103,7 @@ public class PersonDirectory {
 
     public List<Person> getCurrentNonInfectedAndNonVaccinatedList()
     {
-        List<Person> currentNonInfectedList=new ArrayList<Person>();
+        List<Person> currentNonInfectedList=new ArrayList<>();
         for(Person p : PersonList)
         {
             if(!p.isInfected() && (p.getInfection_Status().equals("Naive") || p.getInfection_Status().equals("Recovered")) && !p.isDead() && !p.getInfection_Status().equals("Vaccinated"))
@@ -111,7 +113,7 @@ public class PersonDirectory {
     }
 
     public int getPersonMutationCount(){
-        List<Person> person = new ArrayList<Person>();
+        List<Person> person = new ArrayList<>();
         HashMap<Integer, Color> mutationColor = Mutation.mutationColor;
         int mutation=0;
         for(Integer i : mutationColor.keySet()){

@@ -17,12 +17,9 @@ import java.util.Timer;
 
 public class Simulator extends JPanel implements Runnable {
 
-    //reading the config file to fetch the value of variables
+    //read the config file for configurable valuesu
     Ini ini = new Ini(new File("./config.properties"));
-    //connecting the file to 2 map to ease the reading and fetching for the default and resident_status
     Map<String, String> map = ini.get("default");
-    Map<String, String> resident_status = ini.get("resident_status");
-    Map<String, String> fitnesMap = ini.get("fitness_Value");
     Color currentColor=new Color(255, 255, 255);
 
     Person mutationPerson;
@@ -60,10 +57,6 @@ public class Simulator extends JPanel implements Runnable {
         super.paint(graphics);
         List<Person> people = PersonDirectory.getInstance().getPersonList();
         for (Person person : people) {
-//            if(mutation.getMutationColor().containsKey(person.getMutation_count()))
-//            {
-//                graphics.setColor(mutation.fetchmutationColor(person.getMutation_count()));
-//            }
 
                 if(person.isInfected())
                 {
@@ -87,8 +80,6 @@ public class Simulator extends JPanel implements Runnable {
                          }
                      }
                 }
-
-
             person.checkHealth();
             graphics.fillOval(person.getX(), person.getY(), 10, 10);
         }
@@ -133,15 +124,20 @@ public class Simulator extends JPanel implements Runnable {
 
                 //infect people loop - daily
                 List<Person> currNonInfectedList= PersonDirectory.getInstance().getCurrentNonInfectedList();
-                for(int k=0;k<(spreadCountPercentage * humanPopulation/100);k++)
-                {
+        Random randomSpread=new Random();
+        int loopCount=randomSpread.nextInt((spreadCountPercentage * humanPopulation/100));
+        for(int k=0;k<loopCount;k++)
+        {
                     Random r=new Random();
                     //update noninfected list
                     currNonInfectedList= PersonDirectory.getInstance().getCurrentNonInfectedList();
                     Person currPerson=currNonInfectedList.get(r.nextInt(currNonInfectedList.size()));
                     currPerson.setInfection_count(currPerson.getInfection_count()+1);
                     currPerson.setMutation_count(mutationPerson.getMutation_count());
-                    currPerson.setRecovery_day(recoveryDays);
+                    if(!currPerson.isVaccinated())
+                        currPerson.setRecovery_day(recoveryDays);
+                    else
+                        currPerson.setRecovery_day(recoveryDays/2);
                     currPerson.setInfected(true);
                     currPerson.setMutationColor(currentColor);
                 }
@@ -157,6 +153,10 @@ public class Simulator extends JPanel implements Runnable {
                             p.setMutationColor(new Color(90, 255, 0));
                         }
                         else {
+                            if(p.getHuman_genome().equals("B2")) {
+                                p.setDead(true);
+                                p.setMutationColor(new Color(0,0,0));
+                            }
                             p.setInfected(false);
                             p.setInfection_Status("Recovered");
                             p.setMutationColor(new Color(177, 177, 177));
@@ -192,9 +192,8 @@ public class Simulator extends JPanel implements Runnable {
             }
         }
         //break the paint() method
-        //System.out.println(presentDay);
         if(presentDay<numberOfDays) {
-            Thread.sleep(200);
+            Thread.sleep(500);
             System.out.println("Day : " + presentDay +" | Naive : "+PersonDirectory.getInstance().getNaiveCount() + " | Infected : "+PersonDirectory.getInstance().getInfectedCount()+" | Recovered : "+PersonDirectory.getInstance().getRecoveredCount()+" | Vaccinated : "+PersonDirectory.getInstance().getVaccinatedCount() +" | Dead : "+PersonDirectory.getInstance().getDeadCount());
             presentDay++;
             repaint();
@@ -216,7 +215,6 @@ public class Simulator extends JPanel implements Runnable {
     }
 
     public void loadHashTable() throws IOException {
-        //reading the config file to fetch the value of variables
         Ini ini = new Ini(new File("./config.properties"));
         Map<String, String> fitnesMap = ini.get("fitness_Value");
         List<String> fitnessVal=Arrays.asList(fitnesMap.entrySet().iterator().next().getValue().split(","));
@@ -225,7 +223,6 @@ public class Simulator extends JPanel implements Runnable {
     }
 
     public void generateMutationMap() throws IOException {
-        //reading the config file to fetch the value of variables
         Ini ini = new Ini(new File("./config.properties"));
         Map<String, String> mutationMapTMp = ini.get("gene_length");
         for (Map.Entry<String,String> entry : mutationMapTMp.entrySet())
@@ -294,21 +291,14 @@ public class Simulator extends JPanel implements Runnable {
                             currMutationSb.replace(randomNumber + 1, randomNumber + 2, "1");
                         }
                     } else {
-                        //System.out.println(String.valueOf(Character.getNumericValue(currMutationSb.charAt(1)) + 1));
                         currMutationSb.replace(1, 2,String.valueOf(Character.getNumericValue(currMutationSb.charAt(1)) + 1));
                     }
-
                 }
-                //   System.out.println(currMutationSb);
                 break;
-
             }
         }
 
         return currMutationSb.toString();
-
-
-
     }
 
     public void initializeLoad() throws IOException {
@@ -326,8 +316,6 @@ public class Simulator extends JPanel implements Runnable {
         currentColor=mutation.getMutationColor().get(fitnessHashTable.size());
         System.out.println(currentColor);
     }
-
-
     // end
 
     static int speed = 2;
@@ -359,16 +347,6 @@ public class Simulator extends JPanel implements Runnable {
             VirusStrainMap.data.put("Total Vaccinated Patients: ", PersonDirectory.getInstance().getVaccinatedCount());
 
             VirusStrainMap.updateLbl();
-
-            //repainting the graph with updates
-           // Simulator.this.repaint();
-            //presentDay++;
-
-            //logging the data
-//            if (presentDay % 100 == 0) {
-//                setDosesPerDay();
-//                System.out.println("Time: " + pandemicDay / 10 + " days;Vaccinated people: " + ResidentDirectory.getInstance().getVaccinatedResidents() + ";Normal people: " + ResidentDirectory.getInstance().getResidentNumberbyStatus(Integer.parseInt(resident_status.get("negative"))) + " ;Suspected patients: " + ResidentDirectory.getInstance().getResidentNumberbyStatus(Integer.parseInt(resident_status.get("suspected"))) + " ;Positive patients: " + ResidentDirectory.getInstance().getResidentNumberbyStatus(Integer.parseInt(resident_status.get("positive"))) + " ;Cured: " + ResidentDirectory.getInstance().getCuredResidents() + " ;Super Spreaders: " + ResidentDirectory.getInstance().getSuperSpreaders() + " ;Dead: " + ResidentDirectory.getInstance().getResidentNumberbyStatus(Integer.parseInt(resident_status.get("dead"))));
-//            }
        }
     }
 
@@ -495,32 +473,13 @@ public class Simulator extends JPanel implements Runnable {
         return U;
     }
 
-    public static Hashtable<String, List<String>> getFitnessHashTable() {
-        return fitnessHashTable;
-    }
-
-    public static void setFitnessHashTable(Hashtable<String, List<String>> fitnessHashTable) {
-        Simulator.fitnessHashTable = fitnessHashTable;
-    }
-
-    public static Map<Character, Integer> getMutationMap() {
-        return mutationMap;
-    }
-
-    public static void setMutationMap(Map<Character, Integer> mutationMap) {
-        Simulator.mutationMap = mutationMap;
-    }
-
     public List<Integer> MutationFactor() {
         Map<String, String> naive = ini.get("Naive_infection_factor");
         Map<String, String> recovered = ini.get("Recovered_infection_factor");
         Map<String, String> vaccinated = ini.get("Vaccinated_infection_factor");
-//        String host_genotype = human_genome;
-//        String host_type = infection_Status;
         int U = 0;
         int rec_day = 10;
         List<Integer> UFactor = new ArrayList<>();
-        //U = Integer.parseInt(naive.get("N_A1"));
         for(int i=0; i<4; i++){
             U=Integer.parseInt(naive.get(naive.keySet().toArray()[i]));
             UFactor.add(U);
@@ -533,8 +492,6 @@ public class Simulator extends JPanel implements Runnable {
             U=Integer.parseInt(vaccinated.get(vaccinated.keySet().toArray()[i]));
             UFactor.add(U);
         }
-        //System.out.println("U Factor"+ UFactor);
-        //UFactor.add(Integer.parseInt(naive.get("N_A1")));
         return UFactor;
     }
 

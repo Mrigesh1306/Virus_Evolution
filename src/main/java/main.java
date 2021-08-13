@@ -17,11 +17,8 @@ public class main {
 
         Simulator graph=new Simulator();
         createGraph(graph);
-        //IntializeData();
-        //createVirusGenome();
        graph.initializeLoad();
         createVirusStrainMap(graph);
-        //Virus.Virions.VirionFamily();
 
     }
 
@@ -71,7 +68,7 @@ public class main {
         frame.setVisible(true);
         frame.setTitle(map.get("virus_evolution")+" of "+map.get("human_population")+" Residents on Island");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1200, 600);
+        frame.setSize(1200, 800);
         frame.setResizable(false);
         frame.setLocation(50, 50);
 

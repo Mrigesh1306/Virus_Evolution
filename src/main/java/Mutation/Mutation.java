@@ -7,39 +7,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
-
+/**
+ *
+ * @author mrigesh
+ */
 public class Mutation {
 
     public static HashMap<Integer, Color> mutationColor = new HashMap<>();
-    public String genotype;
-    public int infection_factor;
     public static double previousHostFitness = 30180;
     public static double maxCurrentFitness = 0;
     public static double maxPreviousFitness = 30180;
-
-
-    public static void main(String[] args) throws IOException {
-
-//        int fitness1 = calculateGenotypeFitness("ABCDE1GHIJ", 96);
-//        Hashtable<String, List<String>> fitnessHashTable = null;
-//        boolean isVariant1 = calculateMutationFactor("ABCDE1GHIJ", fitness1, fitnessHashTable);
-//        System.out.println("isVariant1 "+isVariant1);
-//        int fitness2 = calculateGenotypeFitness("AB1DE1GHIJ", 96);
-//        Hashtable<String, List<String>> fitnessHashTable2 = null;
-//        boolean isVariant2 = calculateMutationFactor("AB1DE1GHIJ", fitness2, fitnessHashTable);
-//        System.out.println("isVariant2 "+isVariant2);
-//
-//        int fitness3 = calculateGenotypeFitness("ABC1111111", 96);
-//        Hashtable<String, List<String>> fitnessHashTable3 = null;
-//        boolean isVariant3 = calculateMutationFactor("ABC111111", fitness3, fitnessHashTable);
-//        System.out.println("isVariant3 "+isVariant3);
-//
-//        int fitness4 = calculateGenotypeFitness("1BC1111111", 80);
-//        Hashtable<String, List<String>> fitnessHashTable4 = null;
-//        boolean isVariant4 = calculateMutationFactor("1BC1111111", fitness4, fitnessHashTable);
-//        System.out.println("isVariant4 "+isVariant4);
-    }
-
 
     public static double calculateGenotypeFitness(String genotype, double infection_factor) throws IOException {
         Ini ini = new Ini(new File("./config.properties"));
@@ -75,18 +52,15 @@ public class Mutation {
                             * geneLength;
                 }
             }
-            // insertIntoMutationList(i);
             genotypefitnessValue += gene_fitness_value;
             j++;
         }
-       // System.out.println("Genotype " + genotype + " Value " + genotypefitnessValue);
         return genotypefitnessValue;
     }
 
     //Inserts every mutation into this HashMap and assigns random color
     public static void insertIntoMutationList(int mutationCount) {
         Random r = new Random();
-        //new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255));
         while(true)
         {
             int rc=r.nextInt(255);
@@ -135,8 +109,6 @@ public class Mutation {
             //insert into variant directory if mutation is variant
             insertIntoMutationList(fitnessHashTable.size());
         }
-       System.out.println("currentfitnessValue "+currentfitnessValue);
-        System.out.println("variantThreshold "+variantThreshold);
         return currentfitnessValue > variantThreshold;
     }
 
@@ -144,7 +116,4 @@ public class Mutation {
         return mutationColor;
     }
 
-    public static void setMutationColor(HashMap<Integer, Color> mutationColor) {
-        Mutation.mutationColor = mutationColor;
-    }
 }
