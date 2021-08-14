@@ -77,6 +77,10 @@ public class Simulator extends JPanel implements Runnable {
                     }
                 }
             }
+            if(person.isDead())
+            {
+                graphics.setColor(new Color(0, 0, 0));
+            }
             person.checkHealth();
             graphics.fillOval(person.getX(), person.getY(), 10, 10);
         }

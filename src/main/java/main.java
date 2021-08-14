@@ -43,7 +43,7 @@ public class main {
         frame.setVisible(true);
         frame.setTitle(map.get("virus_evolution") + " of " + map.get("human_population") + " Residents on Island");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1200, 800);
+        frame.setSize(1200, 600);
         frame.setResizable(false);
         frame.setLocation(50, 50);
         frame.setBackground(Color.WHITE);
