@@ -32,6 +32,6 @@ Link for recording : https://northeastern-my.sharepoint.com/:v:/g/personal/dasgu
 
 ## References
 Created by:<br>
-Team Members: Akshay Bhosale | Mrigesh DasGupta | Sayali Mahajan
+Team Members: Akshay Bhosale | Mrigesh Dasgupta | Sayali Mahajan
 
 
