@@ -17,6 +17,7 @@ This project is built to demonstrate Virus Evolution Simulation of variants of a
 Detailed report about project and the simulation can be found here (link to report)
 </h5>
 
+Link for recording : https://northeastern-my.sharepoint.com/:v:/g/personal/dasgupta_m_northeastern_edu/ERX3gTGHWt9EoClf_VGk2XUBPqosRPzcV81q4osB1jfJHg?e=CEX69m
  
 #
 <p align="center">
